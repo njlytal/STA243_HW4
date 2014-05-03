@@ -25,6 +25,7 @@ func.a(1e6)
 
 func.b = function(samps, size)
 {
-    
+    # Use f(x) = ((x^2)/4)*exp(-x *((x^2)/4)) ~ Exp((x^2)/4)
+    # Use h(x) = 3(x^2)
 
 }
