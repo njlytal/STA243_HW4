@@ -20,12 +20,20 @@ func.a = function(samps)
 }
 func.a(1e6)
 
-
 # *** B ***
 
-func.b = function(samps, size)
+
+# *** C ***
+
+func.c = function(samps)
 {
     # Use f(x) = ((x^2)/4)*exp(-x *((x^2)/4)) ~ Exp((x^2)/4)
     # Use h(x) = 3(x^2)
-
+    x = rexp(samps,(runif(1,-2,2)^2)/4)
+    sample = 3*(x.b^2)
+    out = (1/samps)*sum(sample)
+    out
 }
+
+func.c(1e6)
+
