@@ -25,15 +25,18 @@ func.a(1e6)
 
 # *** C ***
 
-func.c = function(samps)
+# NOTE: Should get about 2.275, but currently gives ~ 7.5
+# Not sure how to fix this yet...
+
+# Splits expression into f(x) = Gamma density and h(x) = the rest
+func.c <- function(samps)
 {
-    # Use f(x) = ((x^2)/4)*exp(-x *((x^2)/4)) ~ Exp((x^2)/4)
-    # Use h(x) = 3(x^2)
-    x = rexp(samps,(runif(1,-2,2)^2)/4)
-    sample = 3*(x.b^2)
-    out = (1/samps)*sum(sample)
+    # Use f(x) = ((1/4)^5)/gamma(5) * x^4*exp(-x/4) ~ Gamma(5, 0.25)
+    # Use h(x) = (gamma(5))/((1/4)^5) * exp(-x^2/4)
+    x <- rgamma(samps, 5, 0.25)
+    sample <- (3/4) * (gamma(5))/((1/4)^5) * exp(-(x^2)/4)
+    out <- (1/samps)*sum(sample)
     out
 }
 
 func.c(1e6)
-
