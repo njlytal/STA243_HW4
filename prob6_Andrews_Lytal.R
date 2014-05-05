@@ -57,7 +57,22 @@ IMH <- function(n = 1000, t1, t2)
     x
 }
 
-test = IMH(t1 = 1.5, t2 = 2)
+test = numeric(100)
+for(i in 1:100)
+{
+    test[i] = mean(IMH(t1 = 1.5, t2 = 2))
+}
+mean(test)
+---
+
+test = IMH(n = 1e5, t1 = 1.5, t2 = 2)
+mean(test)
+
+
 
 target.Ez = sqrt(t2/t1)
 target.E1z = sqrt(t1/t2) + (1/(2*t2))
+
+
+# NOTE: Currently yields about 0.722 for E(Z), when
+# it should really be more like 1.155.
