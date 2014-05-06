@@ -9,7 +9,10 @@
 
 # In general
 # f(x) <-
-# h(x) <-
+# h(x) <- indicator function
+
+# Either sample conditionally in the given int. range 
+# OR change all samples out of the given int. range to be 0
 
 # For nu <- 0.1
 

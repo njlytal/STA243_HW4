@@ -26,6 +26,7 @@ func.a <- function(n <- 1500)
 # Estimate I using...
 # I_CV = (1/n) sum(h(Ui)) - b[(1/n)sum(c(Ui)) - E(c(U))]
 # Must analytically calculate E(c(U)) and optimize for b
+# Use Mon 5/5 Class notes to find b, then use this.
 
 func.b <- function(n <- 1500, b <- 1)
 {
