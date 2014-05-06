@@ -1,6 +1,9 @@
 #######################
 ###### PROBLEM 6 ######
 
+# STATUS: ALMOST FINISHED: Just test different thetas!
+# *******************************************************
+
 # Given x(t):
 # 1) Generate Y_t ~ g(y)
 # 2) Take:
@@ -73,8 +76,8 @@ mean(test)
 mean(1/test)
 
 
-target.Ez = sqrt(t2/t1)
-target.E1z = sqrt(t1/t2) + (1/(2*t2))
+target.Ez = sqrt(2/1.5)
+target.E1z = sqrt(1.5/2) + (1/(2*2))
 
 
 # Try with MANY gamma combos: (1,1) and (1,0.5) work best

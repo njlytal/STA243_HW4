@@ -2,7 +2,7 @@
 ###### PROBLEM 1 ######
 
 # STATUS: FINISHED (may want to modify 1c, but it works)
-
+# ************************************************************
 setwd("~/Google Drive/STA 243/HW4")
 
 # *** A ***

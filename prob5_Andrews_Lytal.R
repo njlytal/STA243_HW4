@@ -1,6 +1,10 @@
 #######################
 ###### PROBLEM 5 ######
 
+# STATUS: Need to find part B (simple)
+# Can't proceed without knowing Gibbs Sampler
+# *******************************************************
+
 # *** A ***
 
 # NOTE: This just generates x_i for the Joint Distribution

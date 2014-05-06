@@ -1,6 +1,9 @@
 #######################
 ###### PROBLEM 3 ######
 
+# STATUS: Need to find optimal b, rest is done!
+# **************************************************
+
 # Let I = 1/sqrt(2*pi) int[1-2](exp(-(x^2)/2) dx)
 
 # *** A ***

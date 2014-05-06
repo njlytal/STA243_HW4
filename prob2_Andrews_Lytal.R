@@ -1,6 +1,8 @@
 #######################
 ###### PROBLEM 2 ######
 
+# STATUS: Need to test each g(x), but main procedure is clear
+# ************************************************************
 # Need to review how h(x), f(x), and g(x) go together
 
 # If estimating mu = Int(h(x) * f(x) dx), we use
