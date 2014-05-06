@@ -10,13 +10,15 @@
 # I_MC = (1/n) sum(h(Ui)), n = 1500
 
 # n = samples to take
-func.a <- function(n <- 1500)
+func.a <- function(n = 1500)
 {
     x <- runif(n, 0, 1)
     sample <- (1/(1+x))
     out <- (1/n)*sum(sample)
     out
 }
+
+func.a()
 # Result: About 0.696.
 # Actual: ln(2) = 0.693 - Seems to work fine
 
@@ -52,5 +54,4 @@ func.b()
 # *** D ***
 # Design a new estimator with smaller variance?
 
-# Needs C to be considered...there may be a minimum variance possible,
-# but maybe it's achievable with the I_CV with a good b?
+# We can do this by selecting MORE THAN ONE covariate!
