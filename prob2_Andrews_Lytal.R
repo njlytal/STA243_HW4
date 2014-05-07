@@ -24,29 +24,34 @@
 
 # g(x) <- N(1.5, 0.1^2)
 
+
 IS2 <- function(n, nu)
 {
-    g.x = rnorm(n, 1.5, nu^2)
+    g.x = rnorm(n, 1.5, nu^2) # Sample from g(x)
     for(i in 1:n)
     {
+        # If any values lie outside the integral range...
+        # Set as NA for future removal
         if(g.x[i] > 2 | g.x[i] < 1)
         {
-            g.x[i] = 1e6
+            g.x[i] = NA
         }
     }
-    g.x = g.x[which(g.x != 1e6)]
+    g.x = g.x[!is.na(g.x)] # Removes values outside the int. range
+    
+    # This is h(x)*f(x)/g(x) - plug in values from g.x
     out = nu*exp(((g.x-1.5)^2)/(2*nu^2) - ((g.x^2)/2))
     out
 }
 
-nu1 = IS2(100, 0.1)
-nu2 = IS2(100, 1)
-nu3 = IS2(100, 10)
+nu1 = IS2(1e6, 0.1)
+nu2 = IS2(1e6, 1)
+nu3 = IS2(1e6, 10)
 
 
 hist(nu1)
 hist(nu2)
 hist(nu3)
 
-
+plot(density(nu2))
 # Our goal should be ~ 0.136, but we're not seeing that yet...

@@ -22,6 +22,17 @@ func.a <- function(n = 1500)
 }
 
 func.a()
+
+test = numeric(1e4)
+for(i in 1:1e4)
+{
+    test[i] = func.a()
+}
+
+
+
+
+
 # Result: About 0.696.
 # Actual: ln(2) = 0.693 - Seems to work fine
 
@@ -33,7 +44,40 @@ func.a()
 # Must analytically calculate E(c(U)) and optimize for b
 # Use Mon 5/5 Class notes to find b, then use this.
 
-func.b <- function(n <- 1500, b <- 1)
+mu_MC = log(2) # E[h(x)]
+theta_MC = 1.5 # E[c(Y)]
+
+variance = function(n = 1500, avg)
+{
+    x = runif(n, 1, 2)
+    out = (1/(n-1))*sum((x - avg)^2)
+    out
+}
+
+var.c.y <- variance(1500, 1.5)
+
+var.cov <- function(n, h.avg, c.avg)
+{
+    browser()
+    x <- runif(n, 0, 1)
+    h <- (1/(1+x))
+    
+    c <- (1+x)
+    
+    var = (1/(n-1))*sum((x - c.avg)^2)
+    #cov = cov(h,c)
+    cov = (1/((n-1)))*sum((h - h.avg)*(c - c.avg))
+    out = data.frame(var, cov)
+    out
+}
+
+v.c = var.cov(1500, log(2), 1.5)
+
+b = v.c[2]/v.c[1]
+
+
+
+func.b <- function(n = 1500, b)
 {
     x <- runif(n, 0, 1)
     h.x <- (1/(1+x))
@@ -44,10 +88,8 @@ func.b <- function(n <- 1500, b <- 1)
     out
 }
 
-func.b()
+func.b(1500, b)
 
-# Gives a similar range, but I fail to see how this helps at all.
-# It seems to merely add more variability to the expression.
 
 # *** C ***
 
