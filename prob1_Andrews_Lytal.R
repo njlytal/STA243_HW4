@@ -63,13 +63,27 @@ func.c <- function(samps)
     out
 }
 
-test = numeric(100)
-for(i in 1:100)
+test = numeric(1000)
+for(i in 1:1000)
 {
     test[i] = func.c(5e5)
 }
-plot(density(test))
-abline(v = 2.275)
+plot(density(test), main = "Monte Carlo Method Integral Estimates")
+
+estimates.density <- density(test)
+d.x <- estimates.density$x
+d.y <- estimates.density$y
+density.max <- d.x[which.max(d.y)]
+abline(v=density.max, col = "red")
 
 func.c(1e6)
 hist(test)
+
+d.rv = density(rv)
+d.x = d.rv$x
+d.y = d.rv$y
+
+d.rv.max = d.rv$x[which.max(d.rv$y)]
+
+plot(d.rv)
+abline(v=d.rv.max)

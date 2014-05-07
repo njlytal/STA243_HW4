@@ -31,10 +31,10 @@ IS2 <- function(n, nu)
     {
         if(g.x[i] > 2 | g.x[i] < 1)
         {
-            g.x[i] = 1e6
+            g.x[i] = NA
         }
     }
-    g.x = g.x[which(g.x != 1e6)]
+    g.x = g.x[!is.na(g.x)]
     out = nu*exp(((g.x-1.5)^2)/(2*nu^2) - ((g.x^2)/2))
     out
 }
