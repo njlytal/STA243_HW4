@@ -13,6 +13,7 @@
 # I_MC = (1/n) sum(h(Ui)), n = 1500
 
 # n = samples to take
+# This estimates I_MC
 func.a <- function(n = 1500)
 {
     x <- runif(n, 0, 1)
@@ -21,20 +22,23 @@ func.a <- function(n = 1500)
     out
 }
 
-func.a()
-
-test = numeric(1e4)
-for(i in 1:1e4)
-{
-    test[i] = func.a()
-}
-
-
-
-
 
 # Result: About 0.696.
 # Actual: ln(2) = 0.693 - Seems to work fine
+
+
+# This tests the variance of func.a
+# We want to improve on this in subsequent parts
+test.a = numeric(1e4)
+for(i in 1:1e4)
+{
+    test.a[i] = func.a()
+}
+
+var(test.a)
+
+
+
 
 # *** B ***
 # c(x) = (1+x) is a control variate
@@ -44,19 +48,14 @@ for(i in 1:1e4)
 # Must analytically calculate E(c(U)) and optimize for b
 # Use Mon 5/5 Class notes to find b, then use this.
 
-mu_MC = log(2) # E[h(x)]
-theta_MC = 1.5 # E[c(Y)]
+# mu_MC = log(2) # E[h(x)]
+# theta_MC = 1.5 # E[c(Y)]
 
-variance = function(n = 1500, avg)
-{
-    x = runif(n, 1, 2)
-    out = (1/(n-1))*sum((x - avg)^2)
-    out
-}
-
-var.c.y <- variance(1500, 1.5)
-
-var.cov <- function(n, h.avg, c.avg)
+# Estimates the variance and covariance of h(X) and c(Y)
+# n = samples
+# h.avg = E[h(X)] = log(2)
+# c.avg = E[c(Y)] = 1.5
+var.cov <- function(n, h.avg = log(2), c.avg = 1.5)
 {
     browser()
     x <- runif(n, 0, 1)
@@ -73,10 +72,12 @@ var.cov <- function(n, h.avg, c.avg)
 
 v.c = var.cov(1500, log(2), 1.5)
 
+# The optimal b is Cov(h(X),c(Y))/Var(c(Y))
 b = v.c[2]/v.c[1]
 
-
-
+# This estimates I_CV
+# n = samples
+# b = covariate value determined previously
 func.b <- function(n = 1500, b)
 {
     x <- runif(n, 0, 1)
@@ -89,6 +90,15 @@ func.b <- function(n = 1500, b)
 }
 
 func.b(1500, b)
+
+# Tests the variance of I_CV
+test.b = numeric(1e4)
+for(i in 1:1e4)
+{
+    test.b[i] = func.a()
+}
+
+var(test.b)
 
 
 # *** C ***
