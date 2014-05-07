@@ -37,9 +37,13 @@ IS2 <- function(n, nu)
             g.x[i] = NA
         }
     }
+<<<<<<< HEAD
     g.x = g.x[!is.na(g.x)] # Removes values outside the int. range
     
     # This is h(x)*f(x)/g(x) - plug in values from g.x
+=======
+    g.x = g.x[!is.na(g.x)]
+>>>>>>> FETCH_HEAD
     out = nu*exp(((g.x-1.5)^2)/(2*nu^2) - ((g.x^2)/2))
     out
 }
