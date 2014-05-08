@@ -63,9 +63,9 @@ var.cov <- function(n, h.avg = log(2), c.avg = 1.5)
     
     c <- (1+x)
     
-    var = (1/(n-1))*sum((x - c.avg)^2)
+    var = (1/(n*(n-1)))*sum((x - c.avg)^2)
     #cov = cov(h,c)
-    cov = (1/((n-1)))*sum((h - h.avg)*(c - c.avg))
+    cov = (1/(n*(n-1)))*sum((h - h.avg)*(c - c.avg))
     out = data.frame(var, cov)
     out
 }
@@ -95,7 +95,7 @@ func.b(1500, b)
 test.b = numeric(1e4)
 for(i in 1:1e4)
 {
-    test.b[i] = func.a()
+    test.b[i] = func.b(b = b)
 }
 
 var(test.b)
@@ -109,4 +109,9 @@ var(test.b)
 # *** D ***
 # Design a new estimator with smaller variance?
 
-# We can do this by selecting MORE THAN ONE covariate!
+# We can do this by selecting MORE THAN ONE covariate! Or you can change
+# c, there is a c that will give you a smaller variance. 
+
+# don't use the formula for variance and covariance in calculating
+# b, instead just use cov(h,c)/var(c), but you can use the formula 
+# for caluclating and comparing the variances of our estimators. 
