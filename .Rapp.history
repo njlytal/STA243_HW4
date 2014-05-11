@@ -136,3 +136,248 @@ for(i in 1:1e4)#
 #
 var(test.b)
 var(test.a)
+test = 3
+1<test
+test<2
+1 < test < 2
+1 < test & test < 2
+IS2 <- function(n, nu)#
+{#
+    g.x = rnorm(n, 1.5, nu^2) # Sample from g(x)#
+    # for(i in 1:n)#
+    # {#
+        # # If any values lie outside the integral range...#
+        # # Set as NA for future removal#
+        # if(g.x[i] > 2 | g.x[i] < 1)#
+        # {#
+            # g.x[i] = NA#
+        # }#
+    # }#
+    # g.x = g.x[!is.na(g.x)] # Removes values outside the int. range#
+    # This is h(x)*f(x)/g(x) - plug in values from g.x#
+    indicator <- (1 < g.x & g.x < 2) #
+    out = nu*exp(((g.x-1.5)^2)/(2*nu^2) - ((g.x^2)/2))#
+    out#
+}
+n= 1000
+g.x = rnorm(n, 1.5, nu^2) # Sample from g(x)
+nu = 1
+g.x = rnorm(n, 1.5, nu^2) # Sample from g(x)
+g.x
+indicator <- (1 < g.x & g.x < 2)
+indicator
+indicator <- (1 < g.x & g.x < 2)+0
+indicator
+head(indicator, g.x)
+head(c(g.x, indicator))
+head(cbind(g.x, indicator))
+IS2 <- function(n, nu)#
+{#
+    g.x = rnorm(n, 1.5, nu^2) # Sample from g(x)#
+    # for(i in 1:n)#
+    # {#
+        # # If any values lie outside the integral range...#
+        # # Set as NA for future removal#
+        # if(g.x[i] > 2 | g.x[i] < 1)#
+        # {#
+            # g.x[i] = NA#
+        # }#
+    # }#
+    # g.x = g.x[!is.na(g.x)] # Removes values outside the int. range#
+    # This is h(x)*f(x)/g(x) - plug in values from g.x#
+    indicator <- (1 < g.x & g.x < 2)+0#
+    out = nu*exp(((g.x-1.5)^2)/(2*nu^2) - ((g.x^2)/2))*indicator#
+    out#
+}
+nu1 = IS2(1e6, 0.1)
+nu2 = IS2(1e6, 1)
+nu3 = IS2(1e6, 10)
+hist(nu1)
+plot(density(nu1))#
+abline(v = 0.136, col = "red")#
+plot(density(nu2))#
+abline(v = 0.136, col = "red")#
+plot(density(nu3))#
+abline(v = 0.136, col = "red")
+IS2 <- function(n, nu)#
+{#
+    g.x = rnorm(n, 1.5, nu^2) # Sample from g(x)#
+    # for(i in 1:n)#
+    # {#
+        # # If any values lie outside the integral range...#
+        # # Set as NA for future removal#
+        # if(g.x[i] > 2 | g.x[i] < 1)#
+        # {#
+            # g.x[i] = NA#
+        # }#
+    # }#
+    # g.x = g.x[!is.na(g.x)] # Removes values outside the int. range#
+    # This is h(x)*f(x)/g(x) - plug in values from g.x#
+    indicator <- (1 < g.x & g.x < 2)+0#
+    out = nu*exp(((g.x-1.5)^2)/(2*nu^2) - ((g.x^2)/2))*indicator#
+    out#
+}#
+#
+nu1 = IS2(1e6, 0.1)#
+nu2 = IS2(1e6, 1)#
+nu3 = IS2(1e6, 10)
+par(mfrow = c(3, 1))#
+plot(density(nu1))#
+abline(v = 0.136, col = "red")#
+plot(density(nu2))#
+abline(v = 0.136, col = "red")#
+plot(density(nu3))#
+abline(v = 0.136, col = "red")
+par(mfrow = c(3, 1))#
+plot(density(nu1))#
+abline(v = 0.136, col = "red")#
+plot(density(nu2))#
+abline(v = 0.136, col = "red")#
+plot(density(nu3))#
+abline(v = 0.136, col = "red")
+mean(nu1)
+mean(nu2)
+mean(nu3)
+var(nu1)
+var(nu2)
+var(nu3)
+table(nu3)
+sum(nu3==0)
+sum(nu1==0)
+sum(nu2==0)
+plot(density(g.x))
+nu
+nu = 0.1
+g.x = rnorm(n, 1.5, nu^2) # Sample from g(x)
+plot(density(g.x))
+Let I = 1/sqrt(2*pi) int[1-2](exp(-(x^2)/2) dx)#
+#
+# *** A ***#
+#
+# Let h(x) = (1/(1+x)), U1,...,Un ~IID~ Unif[0,1]#
+# Estimate I using...#
+# I_MC = (1/n) sum(h(Ui)), n = 1500#
+#
+# n = samples to take#
+# This estimates I_MC#
+func.a <- function(n = 1500)#
+{#
+    x <- runif(n, 0, 1)#
+    sample <- (1/(1+x))#
+    out <- (1/n)*sum(sample)#
+    out#
+}#
+# Result: About 0.696.#
+# Actual: ln(2) = 0.693 - Seems to work fine#
+# This tests the variance of func.a#
+# We want to improve on this in subsequent parts#
+test.a = numeric(1e4)#
+for(i in 1:1e4)#
+{#
+    test.a[i] = func.a()#
+}#
+#
+var(test.a)
+var.cov <- function(n, h.avg = log(2), c.avg = 1.5)#
+{#
+    browser()#
+    x <- runif(n, 0, 1)#
+    h <- (1/(1+x))#
+    c <- (1+x)#
+    var = (1/(n*(n-1)))*sum((x - c.avg)^2)#
+    #cov = cov(h,c)#
+    cov = (1/(n*(n-1)))*sum((h - h.avg)*(c - c.avg))#
+    out = data.frame(var, cov)#
+    out#
+}#
+#
+v.c = var.cov(1500, log(2), 1.5)
+b = v.c[2]/v.c[1]
+b = covariate value determined previously#
+func.b <- function(n = 1500, b)#
+{#
+    x <- runif(n, 0, 1)#
+    h.x <- (1/(1+x))#
+    c.x <- (1+x)#
+    e.c.u <- 1.5 # (Ranges from 1+0 to 1+1 with even prob, so 1.5)#
+    out <- (1/n)*sum(h.x) - b*((1/n)*sum(c.x) - e.c.u)#
+    out#
+}#
+#
+func.b(1500, b)#
+#
+# Tests the variance of I_CV#
+test.b = numeric(1e4)#
+for(i in 1:1e4)#
+{#
+    test.b[i] = func.a()#
+}#
+#
+var(test.b)
+var(test.a)
+var(test.b) < var(test.a)
+func.a <- function(n = 1500)#
+{#
+    x <- runif(n, 0, 1)#
+    sample <- (1/(1+x))#
+    out <- (1/n)*sum(sample)#
+    out#
+}
+func.a
+func.a()
+test.a = numeric(1e4)#
+for(i in 1:1e4)#
+{#
+    test.a[i] = func.a()#
+}#
+#
+var(test.a)
+x <- runif(1e6, 0, 1)
+var(x)
+c.avg = 1.5
+var = (1/(n*(n-1)))*sum((x - c.avg)^2)
+var
+h <- (1/(1+x))
+c <- (1+x)
+var(c)
+var(h)
+cov(h,c)
+b <- cov(h, c)/var(c)
+b
+b = v.c[2]/v.c[1]
+b
+b <- cov(h, c)/var(c)
+b
+func.b(1500, b)
+test.b = numeric(1e4)#
+for(i in 1:1e4)#
+{#
+    test.b[i] = func.a()#
+}#
+#
+var(test.b)
+var(test.b) < var(test.a)
+var(test.a)
+test.b = numeric(1e4)#
+for(i in 1:1e4)#
+{#
+    test.b[i] = func.b()#
+}
+b
+func.b <- function(n = 1500, b)#
+{#
+    x <- runif(n, 0, 1)#
+    h.x <- (1/(1+x))#
+    c.x <- (1+x)#
+    e.c.u <- 1.5 # (Ranges from 1+0 to 1+1 with even prob, so 1.5)#
+    out <- (1/n)*sum(h.x) - b*((1/n)*sum(c.x) - e.c.u)#
+    out#
+}
+test.b = numeric(1e4)#
+for(i in 1:1e4)#
+{#
+    test.b[i] = func.b(b = b)#
+}
+var(test.b)
+var(test.b) < var(test.a)
+var(test.a)
