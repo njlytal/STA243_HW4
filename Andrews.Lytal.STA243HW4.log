@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  11 MAY 2014 00:57
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  11 MAY 2014 15:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -368,10 +368,10 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 <STA243HW4Plot1.pdf, id=15, 811.4526pt x 436.78973pt>
 File: STA243HW4Plot1.pdf Graphic file (type pdf)
  <use STA243HW4Plot1.pdf>
-Package pdftex.def Info: STA243HW4Plot1.pdf used on input line 73.
+Package pdftex.def Info: STA243HW4Plot1.pdf used on input line 80.
 (pdftex.def)             Requested size: 405.72531pt x 218.39433pt.
 
-Overfull \hbox (30.94507pt too wide) detected at line 73
+Overfull \hbox (30.94507pt too wide) detected at line 80
 []
  []
 
@@ -381,8 +381,8 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[2 <./STA243HW4Plot1.pdf>]
-Overfull \hbox (16.52748pt too wide) detected at line 99
+[2]
+Overfull \hbox (16.52748pt too wide) detected at line 106
 [][] \OML/cmm/m/it/12 I[] \OMS/cmsy/m/n/12 ^^A [] ^^A [][] [] \OT1/cmr/m/n/12 =
  [] [][] \OML/cmm/m/it/12 e[]dx
  []
@@ -393,24 +393,14 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[3] <STA243HW4Plot2.pdf, id=81, 811.4526pt x 433.62pt>
+[3 <./STA243HW4Plot1.pdf>] <STA243HW4Plot2.pdf, id=80, 811.4526pt x 433.62pt>
 File: STA243HW4Plot2.pdf Graphic file (type pdf)
 
 <use STA243HW4Plot2.pdf>
-Package pdftex.def Info: STA243HW4Plot2.pdf used on input line 125.
+Package pdftex.def Info: STA243HW4Plot2.pdf used on input line 132.
 (pdftex.def)             Requested size: 405.72531pt x 216.80946pt.
 
-Overfull \hbox (5.09538pt too wide) detected at line 125
-[]
- []
-
-<STA243HW4Plot3.pdf, id=82, 811.4526pt x 433.62pt>
-File: STA243HW4Plot3.pdf Graphic file (type pdf)
- <use STA243HW4Plot3.pdf>
-Package pdftex.def Info: STA243HW4Plot3.pdf used on input line 129.
-(pdftex.def)             Requested size: 405.72531pt x 216.80946pt.
-
-Overfull \hbox (5.09538pt too wide) detected at line 129
+Overfull \hbox (5.09538pt too wide) detected at line 132
 []
  []
 
@@ -420,14 +410,31 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[4 <./STA243HW4Plot2.pdf>] <STA243HW4Plot4.pdf, id=156, 811.4526pt x 433.62pt>
+[4] <STA243HW4Plot3.pdf, id=85, 811.4526pt x 433.62pt>
+File: STA243HW4Plot3.pdf Graphic file (type pdf)
+
+<use STA243HW4Plot3.pdf>
+Package pdftex.def Info: STA243HW4Plot3.pdf used on input line 136.
+(pdftex.def)             Requested size: 405.72531pt x 216.80946pt.
+
+Overfull \hbox (5.09538pt too wide) detected at line 136
+[]
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 14.49998pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[5 <./STA243HW4Plot2.pdf>] <STA243HW4Plot4.pdf, id=159, 811.4526pt x 433.62pt>
 File: STA243HW4Plot4.pdf Graphic file (type pdf)
 
 <use STA243HW4Plot4.pdf>
-Package pdftex.def Info: STA243HW4Plot4.pdf used on input line 133.
+Package pdftex.def Info: STA243HW4Plot4.pdf used on input line 140.
 (pdftex.def)             Requested size: 405.72531pt x 216.80946pt.
 
-Overfull \hbox (5.09538pt too wide) detected at line 133
+Overfull \hbox (5.09538pt too wide) detected at line 140
 []
  []
 
@@ -437,26 +444,26 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[5 <./STA243HW4Plot3.pdf>]
+[6 <./STA243HW4Plot3.pdf>]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 14.49998pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[6 <./STA243HW4Plot4.pdf>]
-Overfull \hbox (12.18542pt too wide) in paragraph at lines 166--167
+[7 <./STA243HW4Plot4.pdf>]
+Overfull \hbox (12.18542pt too wide) in paragraph at lines 173--174
 []\OT1/cmr/m/n/12 We con-sider the zero-inflated Pois-son( ZIP) model, in which
  ran-dom data $\OML/cmm/m/it/12 X[]; [] ; X[]$
  []
 
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 168.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 175.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 168.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 175.
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -464,7 +471,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[7] 
+[8] 
 AED: lastpage setting LastPage
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -472,11 +479,11 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[8] (./Andrews.Lytal.STA243HW4.aux) ) 
+[9] (./Andrews.Lytal.STA243HW4.aux) ) 
 Here is how much of TeX's memory you used:
  3852 strings out of 493315
  53989 string characters out of 6137904
- 129213 words of memory out of 5000000
+ 128213 words of memory out of 5000000
  7229 multiletter control sequences out of 15000+600000
  8592 words of font info for 33 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
@@ -493,10 +500,10 @@ public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/pub
 lic/amsfonts/cm/cmr8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public
 /amsfonts/cm/cmsy10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/
 amsfonts/cm/cmsy8.pfb>
-Output written on Andrews.Lytal.STA243HW4.pdf (8 pages, 534008 bytes).
+Output written on Andrews.Lytal.STA243HW4.pdf (9 pages, 536036 bytes).
 PDF statistics:
- 361 PDF objects out of 1000 (max. 8388607)
- 268 compressed objects within 3 object streams
+ 364 PDF objects out of 1000 (max. 8388607)
+ 270 compressed objects within 3 object streams
  0 named destinations out of 1000 (max. 500000)
  21 words of extra memory for PDF output out of 10000 (max. 10000000)
 

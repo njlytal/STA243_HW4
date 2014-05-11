@@ -53,14 +53,21 @@
 \begin{description}
 \item[a.] \[\int_0^1 x^2 dx\]
 The exact integral is calculated, for comparison, as:
-\[\int_0^1 x^2 dx = \]
-Here, we let $f(x) = \frac{1}{1-0}$, a Uniform(0,1) distribution, and we let $h(x) = x^2$. We take 1,000,000 samples from a Uniform(0,1), and using the Monte Carlo method we obtain an estimate of the evaluated integral as .333328, or equivalenty $\frac{1}{3}$.
+\[\int_0^1 x^2 dx = \left. \frac{x^3}{3} \right|_0^1 = \frac{1}{3} \approx .333\bar{3} \]
+Here, we let $f(x) = \frac{1}{1-0}$, a Uniform(0,1) distribution, and we let $h(x) = x^2$. We take 1,000,000 samples from a Uniform(0,1), and using the Monte Carlo method we obtain an estimate of the evaluated integral as .333328, or equivalenty $\frac{1}{3}$. Thus, we see that the Monte Carlo Method estimated the integral accurately. 
 
 \item[b.] \[\int_0^1 \int^2_{-2} x^2 \mathrm{cos}(xy) \ \ dx dy\]
 
-Here, since we have two variables, instead of having $f(x)$ and $h(x)$, we will instead have $f(x,y)$ and $h(x,y)$. Here, we let $f(x,y) = \frac{1}{4}$ and we let $h(x,y) = 4x^2\mathrm{cos}(xy)$. Thus, we see that $\int_0^1 \int_{-1}^2 \frac{1}{4} = 1$, which satisfies our condition for $f(x,y)$. We sample from a Uniform(-2,2) for x and from a Uniform(0,1) for y, each 1,000,000 times, and we plug these values into our function $h(x,y)$. Thus, taking 1,000,000 samples from the two Uniform distribution and using the Monte Carlo method, we obtain an estimate of the evaluated integral of 3.480481.
+We solve the exact integral using computational tools for comparison purposes, and obtain
 
-\item[c.] \[\int_0^\infty \frac{3}{4} e^{-\frac{x^3}{4}} dx\]
+\[\int_0^1 \int^2_{-2} x^2 \mathrm{cos}(xy) \ \ dx dy \approx 3.48318\]
+
+Here, since we have two variables, instead of having $f(x)$ and $h(x)$, we will instead have $f(x,y)$ and $h(x,y)$. Here, we let $f(x,y) = \frac{1}{4}$ and we let $h(x,y) = 4x^2\mathrm{cos}(xy)$. Thus, we see that $\int_0^1 \int_{-1}^2 \frac{1}{4} = 1$, which satisfies our condition for $f(x,y)$. We sample from a Uniform(-2,2) for x and from a Uniform(0,1) for y, each 1,000,000 times, and we plug these values into our function $h(x,y)$. Thus, taking 1,000,000 samples from the two Uniform distribution and using the Monte Carlo method, we obtain an estimate of the evaluated integral of 3.480481. Thus, we see that the Monte Carlo method produced an accurate estimate of the integral. 
+
+\item[c.] \[\int_0^\infty \frac{3}{4} x^4 e^{-\frac{x^3}{4}} dx\]
+
+We solve the exact integral for comparison. Using computational tools we obtain:
+\[\int_0^\infty \frac{3}{4} e^{-\frac{x^3}{4}} dx = 2 \sqrt[3]{2} \Gamma \left( \frac{5}{3} \right) \approx 2.27478 \]
 
 Here, we see that the integral is over a very large range (0 to $\infty$), compared to the other integrals that we have evaluated. As a result, we do not expect to obtain as accurate results for evaluating the integral as we did in parts a and b. Thus, here we estimate the integral 100 times using 1,000,000 samples and the Monte Carlo method, and plot the density to see the value that the estimates center themselves around. For this integral, we let $f(x)$ and $h(x)$ be defined as:
 
@@ -68,7 +75,7 @@ Here, we see that the integral is over a very large range (0 to $\infty$), compa
 
 \[h(x) = \frac{3}{4} \cdot \frac{\Gamma(5)}{\frac{1}{4}^5} \cdot \mathrm{exp} \left( \frac{x}{4} - \frac{x^3}{4}\right)\]
 
-Thus, we take 1,000,000 samples of x from $x \sim \Gamma(5, 0.25)$ and plug these into $h(x)$ to be used in the formula for estimating the integral. Repeating this process 1000 times, we obtain the following density plot of evaluated integral estimates. The vertical red line represents the maximum of the density, which occurs at the value 2.25775.
+Thus, we take 1,000,000 samples of x from $x \sim \Gamma(5, 0.25)$ and plug these into $h(x)$ to be used in the formula for estimating the integral. Repeating this process 1000 times, we obtain the following density plot of evaluated integral estimates. The vertical red line represents the maximum of the density, which occurs at the value 2.25775. Here we see that the Monte Carlo method did not approximate the integral as accurately as previous integrals that we approximated (see parts a and b). However, this is expected since we have such a large range that we are integrating over (to infinity). In previous problems, we were integrating over a finite interval of numbers, allowing for more accurate approximation. 
 
 \[\includegraphics[scale = 0.50]{STA243HW4Plot1}\]
 \end{description}
