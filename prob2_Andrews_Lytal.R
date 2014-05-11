@@ -52,10 +52,16 @@ nu3 = IS2(1e6, 10)
 # and nu3 doesn't work because the effective sample size is small,
 # the nu1 does not explore the whole sample space. 
 
-hist(nu1)
-hist(nu2)
-hist(nu3)
+mean(nu1)
+mean(nu2)
+mean(nu3)
 
+hist(nu1, main = "Values to be Averaged for nu = 0.1", xlab = "nu = 0.1", breaks = 50)
+hist(nu2, main = "Values to be Averaged for nu = 1", xlab = "nu = 1", breaks = 50)
+hist(nu3, main = "Values to be Averaged for nu = 10", xlab = "nu = 10", breaks = 50)
+
+
+# We don't actually need to show these, they are not helpful. 
 par(mfrow = c(3, 1))
 plot(density(nu1))
 abline(v = 0.136, col = "red")
