@@ -18,7 +18,7 @@ func.a <- function(n = 100, p = 0.3, lam = 2)
 }
 x = func.a()
 
-plot(density(func.a()), main = "Random Sample for ZIP Model, p= 0.3, lambda = 2")
+plot(density(func.a()), main = "Random Sample for ZIP Model, p = 0.3, lambda = 2")
 # *** B ***
 # This is strictly Calculus, so no need for programming.
 
