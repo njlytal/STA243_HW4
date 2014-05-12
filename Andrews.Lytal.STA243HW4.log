@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  11 MAY 2014 19:08
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  11 MAY 2014 22:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -478,7 +478,31 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[9] 
+[9] <STA243HW4Q6Plot1.pdf, id=328, 811.4526pt x 440.59344pt>
+File: STA243HW4Q6Plot1.pdf Graphic file (type pdf)
+
+<use STA243HW4Q6Plot1.pdf>
+Package pdftex.def Info: STA243HW4Q6Plot1.pdf used on input line 222.
+(pdftex.def)             Requested size: 405.72531pt x 220.29617pt.
+
+Overfull \hbox (5.09538pt too wide) detected at line 222
+[]
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 14.49998pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[10]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 14.49998pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[11 <./STA243HW4Q6Plot1.pdf>] 
 AED: lastpage setting LastPage
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -486,12 +510,12 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[10] (./Andrews.Lytal.STA243HW4.aux) ) 
+[12] (./Andrews.Lytal.STA243HW4.aux) ) 
 Here is how much of TeX's memory you used:
- 3852 strings out of 493315
- 53989 string characters out of 6137904
+ 3857 strings out of 493315
+ 54108 string characters out of 6137904
  128215 words of memory out of 5000000
- 7229 multiletter control sequences out of 15000+600000
+ 7233 multiletter control sequences out of 15000+600000
  8592 words of font info for 33 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  38i,11n,43p,981b,342s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -507,10 +531,10 @@ e1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1
 blic/amsfonts/cm/cmr8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/publi
 c/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public
 /amsfonts/cm/cmsy8.pfb>
-Output written on Andrews.Lytal.STA243HW4.pdf (10 pages, 544284 bytes).
+Output written on Andrews.Lytal.STA243HW4.pdf (12 pages, 648278 bytes).
 PDF statistics:
- 367 PDF objects out of 1000 (max. 8388607)
- 272 compressed objects within 3 object streams
+ 444 PDF objects out of 1000 (max. 8388607)
+ 329 compressed objects within 4 object streams
  0 named destinations out of 1000 (max. 500000)
- 21 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 26 words of extra memory for PDF output out of 10000 (max. 10000000)
 

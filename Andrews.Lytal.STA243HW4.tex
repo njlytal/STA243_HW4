@@ -217,7 +217,23 @@ A random variable Z has an inverge Gaussian distribution it it has density
 where $\theta_1 0$ and $\theta_2 >0$ are parameters. It can be shown that 
 \[E(Z) = \sqrt{\frac{\theta_2}{\theta_1}} \ \ \ \ \mathrm{and} \ \ \ \ E\left(\frac{1}{Z} \right)= \sqrt{\frac{\theta_1}{\theta_2}} + \frac{1}{2\theta_2}\]
 
-We let $\theta_1 = 1.5$ and $\theta_2 = 2$, and draw a sample of size 1,000 using the independence-Metropolis-Hastings algroithm. We use a Gamma distribution as the proposal density. 
+We let $\theta_1 = 1.5$ and $\theta_2 = 2$, and draw a sample of size 1,000 using the independence-Metropolis-Hastings algroithm. We use a Gamma distribution as the proposal density. Below is a density plot of the sample drawn using the Independence-Metropolis-Hastings algorithm with a Gamma distribution as the proposal density. 
+
+\[\includegraphics[scale = 0.50]{STA243HW4Q6Plot1.pdf}\]
+
+To assess the accuracy of the Independence - Metropolis - Hastings algroithm, we compare the mean of $Z$ and $1/Z$ from the sample to the theoretical means. The theoretical means are derived below:
+
+\[E[Z] = \sqrt{\frac{\theta_2}{\theta_1}} = \sqrt{\frac{2}{1.5}} \approx 1.154701\]
+\[E\left[ \frac{1}{Z} \right] = \sqrt{\frac{\theta_1}{\theta_2}} + \frac{1}{2\theta_2} = \sqrt{\frac{1.5}{2}} + \frac{1}{2\cdot 2} \approx 1.116025\]
+
+Our sample of n = 1,000,000 yields the following estimates of the means:
+
+\[\hat{E}[Z] \approx 1.153933, \ \ \ \ \hat{E}\left[\frac{1}{Z}\right] \approx 1.116973\]
+
+From this, we see that the Independence - Metropolis - Hastings algorithm performed pretty well, as the estimates based on our sample very, very similar to the theoretical values, to several decimal places. The remaining difference is likely due to the sample size, and we believe that the sample values will approach the theoretical values as n $\rightarrow \infty$. Thus, it appears that our sample is relatively accurate. \\
+
+In addition to this $\theta_1$ and $\theta_2$, we try several different combinations of $\theta_1$ and $\theta_2$ in order to see if we can get accurate samples. For computational ease, we now let n = 1000 as opposed to n = 1000000 
+
 \end{description}
 \end{document}
 
