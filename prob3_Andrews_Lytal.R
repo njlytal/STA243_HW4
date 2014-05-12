@@ -117,8 +117,12 @@ var(test.b)
 
 # *** C ***
 
-# There's a particular process for estimating variance, detailed in notes
-# May want to review/ask about this--I don't understand it quite yet.
+# NOTE: Try to use percent reduction in variance, which is
+# independent of the number of samples used.
+
+x <- 1.274619e-5
+y <- 4.002654e-7
+1 - y/x # 0.9685973 (so ~96.9% reduction)
 
 # *** D ***
 # Design a new estimator with smaller variance?

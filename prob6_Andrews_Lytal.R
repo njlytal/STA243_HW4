@@ -62,17 +62,10 @@ IMH <- function(n = 1000, t1, t2)
     samps
 }
 
-test = numeric(100)
-for(i in 1:100)
-{
-    test[i] = mean(IMH(t1 = 1.5, t2 = 2))
-}
 
-
-mean(test)
 ---
 
-test = IMH(n = 1000000, t1 = 1, t2 = 1)
+test = IMH(n = 1e6, t1 = 1, t2 = 1)
 
 mean(test)
 mean(1/test)
@@ -106,9 +99,9 @@ for(i in 1:nrow(all.values)){
 	t2 <- all.values[i, 2]
 	temp <- IMH(n = 1000, t1 = t1, t2 = t2)
 	E.z <- mean(temp)
-	target.E.z <- sqrt(t2/t1)
+	target.E.z <- sqrt(2/1.5)
 	E.inv.z <- mean(1/temp)
-	target.E.inv.z <- sqrt(t1/t2) + 1/(2*t2)
+	target.E.inv.z <- sqrt(1.5/2) + 1/(2*2)
 	abs.diff.E.z <- abs(E.z - target.E.z)
 	abs.diff.E.inv.z <- abs(E.inv.z - target.E.inv.z)
 	results[i, ] <- c(E.z, target.E.z, abs.diff.E.z, E.inv.z, target.E.inv.z, abs.diff.E.inv.z)
