@@ -90,15 +90,15 @@ optMeans <- function(theta.1, theta.2){
 
 values <- c(0.5, 1, 1.5, 2, 5, 7, 10)
 
-theta.1 <- rep(values, rep(7, 7))
-theta.2 <- rep(values, 7)
-all.values <- cbind(theta.1, theta.2)
+a <- rep(values, rep(7, 7))
+b <- rep(values, 7)
+all.values <- cbind(a, b)
 
 results <- matrix(ncol = 6, nrow = nrow(all.values))
 for(i in 1:nrow(all.values)){
-	t1 <- all.values[i, 1]
-	t2 <- all.values[i, 2]
-	temp <- IMH(n = 1000, t1 = t1, t2 = t2)
+	a <- all.values[i, 1]
+	b <- all.values[i, 2]
+	temp <- IMH(n = 1000, t1 = 1.5, t2 = 2, a = a, b = b)
 	E.z <- mean(temp)
 	target.E.z <- sqrt(2/1.5)
 	E.inv.z <- mean(1/temp)
