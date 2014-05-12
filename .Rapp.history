@@ -1,65 +1,32 @@
-?is.na
-Let I = 1/sqrt(2*pi) int[1-2](exp(-(x^2)/2) dx)#
-#
-# *** A ***#
-#
-# Let h(x) = (1/(1+x)), U1,...,Un ~IID~ Unif[0,1]#
-# Estimate I using...#
-# I_MC = (1/n) sum(h(Ui)), n = 1500#
-#
-# n = samples to take#
-func.a <- function(n = 1500)#
-{#
-    x <- runif(n, 0, 1)#
-    sample <- (1/(1+x))#
-    out <- (1/n)*sum(sample)#
-    out#
-}#
-#
-func.a()#
-#
-test = numeric(1e4)#
-for(i in 1:1e4)#
-{#
-    test[i] = func.a()#
-}
-mu_MC = log(2) # E[h(x)]#
-theta_MC = 1.5 # E[c(Y)]#
-#
-variance = function(n = 1500, avg)#
-{#
-    x = runif(n, 1, 2)#
-    out = (1/(n-1))*sum((x - avg)^2)#
-    out#
-}#
-#
-var.c.y <- variance(1500, 1.5)#
-#
-var.cov <- function(n, h.avg, c.avg)#
-{#
-    browser()#
-    x <- runif(n, 0, 1)#
-    h <- (1/(1+x))#
-    c <- (1+x)#
-    var = (1/(n-1))*sum((x - c.avg)^2)#
-    #cov = cov(h,c)#
-    cov = (1/((n-1)))*sum((h - h.avg)*(c - c.avg))#
-    out = data.frame(var, cov)#
-    out#
-}
-v.c = var.cov(1500, log(2), 1.5)
-b = v.c[2]/v.c[1]
-func.b <- function(n = 1500, b)#
-{#
-    x <- runif(n, 0, 1)#
-    h.x <- (1/(1+x))#
-    c.x <- (1+x)#
-    e.c.u <- 1.5 # (Ranges from 1+0 to 1+1 with even prob, so 1.5)#
-    out <- (1/n)*sum(h.x) - b*((1/n)*sum(c.x) - e.c.u)#
-    out#
-}#
-#
-func.b(1500, b)
+hist(nu2, main = "Values to be Averaged for nu = 1", xlab = "nu = 1", breaks = 50)
+hist(nu3, main = "Values to be Averaged for nu = 10", xlab = "nu = 10", breaks = 50)
+summary(nu1)
+summary(nu2)
+summary(nu3)
+g.x = 0
+n = 0.1
+out = nu*exp(((g.x-1.5)^2)/(2*nu^2) - ((g.x^2)/2))*indicator
+nu = 0.1
+out = nu*exp(((g.x-1.5)^2)/(2*nu^2) - ((g.x^2)/2))*indicator
+indicator = 0
+out = nu*exp(((g.x-1.5)^2)/(2*nu^2) - ((g.x^2)/2))*indicator
+out
+g.x = rnorm(1, 1.5, nu^2) # Sample from g(x)
+g.x
+out = nu*exp(((g.x-1.5)^2)/(2*nu^2) - ((g.x^2)/2))*indicator
+out
+sum(nu1==0)
+sum(nu2==0)
+sum(nu3==0)
+indicator = 1
+g.x = 1
+nu = 1
+out = nu*exp(((g.x-1.5)^2)/(2*nu^2) - ((g.x^2)/2))*indicator
+out
+g.x = 2
+out = nu*exp(((g.x-1.5)^2)/(2*nu^2) - ((g.x^2)/2))*indicator
+out
+plot(density(nu3))
 PROBLEM 3 #######
 #
 # STATUS: Need to find optimal b, rest is done!#
@@ -81,8 +48,8 @@ func.a <- function(n = 1500)#
     sample <- (1/(1+x))#
     out <- (1/n)*sum(sample)#
     out#
-}#
-# Result: About 0.696.#
+}
+Result: About 0.696.#
 # Actual: ln(2) = 0.693 - Seems to work fine#
 # This tests the variance of func.a#
 # We want to improve on this in subsequent parts#
@@ -92,278 +59,64 @@ for(i in 1:1e4)#
     test.a[i] = func.a()#
 }#
 #
-var(test.a)#
-# *** B ***#
-# c(x) = (1+x) is a control variate#
-#
-# Estimate I using...#
-# I_CV = (1/n) sum(h(Ui)) - b[(1/n)sum(c(Ui)) - E(c(U))]#
-# Must analytically calculate E(c(U)) and optimize for b#
-# Use Mon 5/5 Class notes to find b, then use this.#
-#
-# mu_MC = log(2) # E[h(x)]#
-# theta_MC = 1.5 # E[c(Y)]#
-#
-# Estimates the variance and covariance of h(X) and c(Y)#
-# n = samples#
-# h.avg = E[h(X)] = log(2)#
-# c.avg = E[c(Y)] = 1.5#
-var.cov <- function(n, h.avg = log(2), c.avg = 1.5)#
-{#
-    browser()#
-    x <- runif(n, 0, 1)#
-    h <- (1/(1+x))#
-    c <- (1+x)#
-    var = (1/(n-1))*sum((x - c.avg)^2)#
-    #cov = cov(h,c)#
-    cov = (1/((n-1)))*sum((h - h.avg)*(c - c.avg))#
-    out = data.frame(var, cov)#
-    out#
-}#
-#
-v.c = var.cov(1500, log(2), 1.5)#
-#
-# The optimal b is Cov(h(X),c(Y))/Var(c(Y))#
-b = v.c[2]/v.c[1]
-n
+var(test.a)
+func.a
+func.a(n = 1000000)
+ln(2)
+log(2)
+?log
+getb <- function(n, h.avg = log(2), c.avg = 1.5){#
+  x <- runif(n, 0, 1)#
+  h <- (1/(1 + x))#
+  c <- (1 + x)#
+  b <- cov(h, c)/var(c)#
+  b#
+}
+b <- getb(1000000, log(2), 1.5)
 b
-func.b(1500, b)
-test.b = numeric(1e4)#
-for(i in 1:1e4)#
-{#
-    test.b[i] = func.a()#
+getb <- function(n, h.avg = log(2), c.avg = 1.5){#
+  x <- runif(n, 0, 1)#
+  h <- (1/(1 + x))#
+  c <- (1 + x)#
+  b <- cov(h, c)/var(c)#
+  b#
 }#
 #
-var(test.b)
-var(test.a)
-test = 3
-1<test
-test<2
-1 < test < 2
-1 < test & test < 2
-IS2 <- function(n, nu)#
-{#
-    g.x = rnorm(n, 1.5, nu^2) # Sample from g(x)#
-    # for(i in 1:n)#
-    # {#
-        # # If any values lie outside the integral range...#
-        # # Set as NA for future removal#
-        # if(g.x[i] > 2 | g.x[i] < 1)#
-        # {#
-            # g.x[i] = NA#
-        # }#
-    # }#
-    # g.x = g.x[!is.na(g.x)] # Removes values outside the int. range#
-    # This is h(x)*f(x)/g(x) - plug in values from g.x#
-    indicator <- (1 < g.x & g.x < 2) #
-    out = nu*exp(((g.x-1.5)^2)/(2*nu^2) - ((g.x^2)/2))#
-    out#
-}
-n= 1000
-g.x = rnorm(n, 1.5, nu^2) # Sample from g(x)
-nu = 1
-g.x = rnorm(n, 1.5, nu^2) # Sample from g(x)
-g.x
-indicator <- (1 < g.x & g.x < 2)
-indicator
-indicator <- (1 < g.x & g.x < 2)+0
-indicator
-head(indicator, g.x)
-head(c(g.x, indicator))
-head(cbind(g.x, indicator))
-IS2 <- function(n, nu)#
-{#
-    g.x = rnorm(n, 1.5, nu^2) # Sample from g(x)#
-    # for(i in 1:n)#
-    # {#
-        # # If any values lie outside the integral range...#
-        # # Set as NA for future removal#
-        # if(g.x[i] > 2 | g.x[i] < 1)#
-        # {#
-            # g.x[i] = NA#
-        # }#
-    # }#
-    # g.x = g.x[!is.na(g.x)] # Removes values outside the int. range#
-    # This is h(x)*f(x)/g(x) - plug in values from g.x#
-    indicator <- (1 < g.x & g.x < 2)+0#
-    out = nu*exp(((g.x-1.5)^2)/(2*nu^2) - ((g.x^2)/2))*indicator#
-    out#
-}
-nu1 = IS2(1e6, 0.1)
-nu2 = IS2(1e6, 1)
-nu3 = IS2(1e6, 10)
-hist(nu1)
-plot(density(nu1))#
-abline(v = 0.136, col = "red")#
-plot(density(nu2))#
-abline(v = 0.136, col = "red")#
-plot(density(nu3))#
-abline(v = 0.136, col = "red")
-IS2 <- function(n, nu)#
-{#
-    g.x = rnorm(n, 1.5, nu^2) # Sample from g(x)#
-    # for(i in 1:n)#
-    # {#
-        # # If any values lie outside the integral range...#
-        # # Set as NA for future removal#
-        # if(g.x[i] > 2 | g.x[i] < 1)#
-        # {#
-            # g.x[i] = NA#
-        # }#
-    # }#
-    # g.x = g.x[!is.na(g.x)] # Removes values outside the int. range#
-    # This is h(x)*f(x)/g(x) - plug in values from g.x#
-    indicator <- (1 < g.x & g.x < 2)+0#
-    out = nu*exp(((g.x-1.5)^2)/(2*nu^2) - ((g.x^2)/2))*indicator#
-    out#
-}#
-#
-nu1 = IS2(1e6, 0.1)#
-nu2 = IS2(1e6, 1)#
-nu3 = IS2(1e6, 10)
-par(mfrow = c(3, 1))#
-plot(density(nu1))#
-abline(v = 0.136, col = "red")#
-plot(density(nu2))#
-abline(v = 0.136, col = "red")#
-plot(density(nu3))#
-abline(v = 0.136, col = "red")
-par(mfrow = c(3, 1))#
-plot(density(nu1))#
-abline(v = 0.136, col = "red")#
-plot(density(nu2))#
-abline(v = 0.136, col = "red")#
-plot(density(nu3))#
-abline(v = 0.136, col = "red")
-mean(nu1)
-mean(nu2)
-mean(nu3)
-var(nu1)
-var(nu2)
-var(nu3)
-table(nu3)
-sum(nu3==0)
-sum(nu1==0)
-sum(nu2==0)
-plot(density(g.x))
-nu
-nu = 0.1
-g.x = rnorm(n, 1.5, nu^2) # Sample from g(x)
-plot(density(g.x))
-Let I = 1/sqrt(2*pi) int[1-2](exp(-(x^2)/2) dx)#
-#
-# *** A ***#
-#
-# Let h(x) = (1/(1+x)), U1,...,Un ~IID~ Unif[0,1]#
-# Estimate I using...#
-# I_MC = (1/n) sum(h(Ui)), n = 1500#
-#
-# n = samples to take#
-# This estimates I_MC#
-func.a <- function(n = 1500)#
-{#
-    x <- runif(n, 0, 1)#
-    sample <- (1/(1+x))#
-    out <- (1/n)*sum(sample)#
-    out#
-}#
-# Result: About 0.696.#
-# Actual: ln(2) = 0.693 - Seems to work fine#
-# This tests the variance of func.a#
-# We want to improve on this in subsequent parts#
-test.a = numeric(1e4)#
-for(i in 1:1e4)#
-{#
-    test.a[i] = func.a()#
-}#
-#
-var(test.a)
-var.cov <- function(n, h.avg = log(2), c.avg = 1.5)#
-{#
-    browser()#
-    x <- runif(n, 0, 1)#
-    h <- (1/(1+x))#
-    c <- (1+x)#
-    var = (1/(n*(n-1)))*sum((x - c.avg)^2)#
-    #cov = cov(h,c)#
-    cov = (1/(n*(n-1)))*sum((h - h.avg)*(c - c.avg))#
-    out = data.frame(var, cov)#
-    out#
-}#
-#
-v.c = var.cov(1500, log(2), 1.5)
-b = v.c[2]/v.c[1]
-b = covariate value determined previously#
-func.b <- function(n = 1500, b)#
-{#
-    x <- runif(n, 0, 1)#
-    h.x <- (1/(1+x))#
-    c.x <- (1+x)#
-    e.c.u <- 1.5 # (Ranges from 1+0 to 1+1 with even prob, so 1.5)#
-    out <- (1/n)*sum(h.x) - b*((1/n)*sum(c.x) - e.c.u)#
-    out#
-}#
-#
-func.b(1500, b)#
-#
-# Tests the variance of I_CV#
-test.b = numeric(1e4)#
-for(i in 1:1e4)#
-{#
-    test.b[i] = func.a()#
-}#
-#
-var(test.b)
-var(test.a)
-var(test.b) < var(test.a)
-func.a <- function(n = 1500)#
-{#
-    x <- runif(n, 0, 1)#
-    sample <- (1/(1+x))#
-    out <- (1/n)*sum(sample)#
-    out#
-}
+b <- getb(1000000, log(2), 1.5)
+b
 func.a
 func.a()
+func.a()
+func.a()
+func.a()
+b <- getb(1500, log(2), 1.5)
+b
+mc.samp <- func.a()
+mc.var <- (1/(n*(n-1)))*sum((mc.samp - mean(mc.samp))^2)
+mc.var
+var(mc.samp)
+mc.samp
 test.a = numeric(1e4)#
 for(i in 1:1e4)#
 {#
     test.a[i] = func.a()#
-}#
-#
-var(test.a)
-x <- runif(1e6, 0, 1)
-var(x)
-c.avg = 1.5
-var = (1/(n*(n-1)))*sum((x - c.avg)^2)
-var
-h <- (1/(1+x))
-c <- (1+x)
-var(c)
-var(h)
-cov(h,c)
-b <- cov(h, c)/var(c)
-b
-b = v.c[2]/v.c[1]
-b
-b <- cov(h, c)/var(c)
-b
-func.b(1500, b)
-test.b = numeric(1e4)#
-for(i in 1:1e4)#
-{#
-    test.b[i] = func.a()#
-}#
-#
-var(test.b)
-var(test.b) < var(test.a)
-var(test.a)
-test.b = numeric(1e4)#
-for(i in 1:1e4)#
-{#
-    test.b[i] = func.b()#
 }
-b
+mc.var <- (1/(n*(n-1)))*sum((func.a - log(2))^2)
+mc.var <- (1/(n*(n-1)))*sum((func.a() - log(2))^2)
+mc.var
+var(test.a)
+mc.var <- (1/(n*(n-1)))*sum((func.a() - log(2))^2)
+mc.var
+var(test.a)
+{#
+    x <- runif(n, 0, 1)#
+    h.x <- (1/(1+x))#
+    c.x <- (1+x)#
+    e.c.u <- 1.5 # (Ranges from 1+0 to 1+1 with even prob, so 1.5)#
+    out <- (1/n)*sum(h.x) - b*((1/n)*sum(c.x) - e.c.u)#
+    out#
+}
+func.b(1500, b)
 func.b <- function(n = 1500, b)#
 {#
     x <- runif(n, 0, 1)#
@@ -373,11 +126,558 @@ func.b <- function(n = 1500, b)#
     out <- (1/n)*sum(h.x) - b*((1/n)*sum(c.x) - e.c.u)#
     out#
 }
+func.b(1500, b)
 test.b = numeric(1e4)#
 for(i in 1:1e4)#
 {#
     test.b[i] = func.b(b = b)#
-}
+}#
+#
 var(test.b)
-var(test.b) < var(test.a)
-var(test.a)
+PROBLEM 6 #######
+#
+# STATUS: ALMOST FINISHED: Just test different thetas!#
+# *******************************************************#
+#
+# Given x(t):#
+# 1) Generate Y_t ~ g(y)#
+# 2) Take:#
+#
+# x(t+1) = Y_t with prob. min((f(Y_t)*g(x(t))) / (f(x(t))*g(Y_t)), 1)#
+#        = x(t) otherwise#
+#
+# Proposal density = Gamma(t1, t2)#
+#
+t1 = 1.5#
+t2 = 2#
+#
+# In the terms given in Problem 6...#
+# g(x) = Gamma(t1, t2)#
+# f(x) = Inv. Gaussian given#
+#
+f <- function(z, t1, t2)#
+{#
+    (z^-(3/2))*exp(-t1*z - (t2/z) + 2*sqrt(t1*t2) + log(sqrt(2*t2)))#
+}#
+#
+g <- function(x, s1, s2)#
+{#
+    dgamma(x, s1, s2)#
+}
+Independent Metropolis-Hastings Algorithm#
+# n = sample size#
+# t1 = variable 1 proposal density#
+# t2 = variable 2 for proposal density#
+# theta1 and theta2 are fixed at 1.5 and 2 for all cases of f.x()#
+#
+IMH <- function(n = 1000, t1, t2)#
+{#
+    browser()#
+    set.seed(0)#
+    samps <- numeric(n)             # Define vector to contain samples#
+    samps[1] <- rgamma(1, t1, t2)   # Define first value of sample#
+    for(i in 2:n)#
+    {#
+        x = samps[i-1]              # This is x(t), the previous x value#
+        y = rgamma(1, t1, t2)   # This is Y_t, the potential NEW value#
+        # Now define cutoff and probability of acceptance#
+        # u must be less than p.accept to accept a new value#
+        u = runif(1, 0, 1)#
+        p.accept = min( (f(y,1.5,2)*g(x,t1,t2))/(f(x,1.5,2)*g(y,t1,t2)), 1) #
+        if(u < p.accept)#
+        {#
+            samps[i] = y # Accept the new value#
+        }else{#
+            samps[i] = x # Keep the old value#
+        }#
+    }#
+    samps#
+}#
+#
+test = numeric(100)#
+for(i in 1:100)#
+{#
+    test[i] = mean(IMH(t1 = 1.5, t2 = 2))#
+}#
+mean(test)#
+---#
+#
+test = IMH(t1 = 1, t2 = 1)#
+#
+mean(test)#
+mean(1/test)#
+target.Ez = sqrt(2/1.5)#
+target.E1z = sqrt(1.5/2) + (1/(2*2))#
+# Try with MANY gamma combos: (1,1) and (1,0.5) work best
+IMH <- function(n = 1000, t1, t2)#
+{#
+    set.seed(0)#
+    samps <- numeric(n)             # Define vector to contain samples#
+    samps[1] <- rgamma(1, t1, t2)   # Define first value of sample#
+    for(i in 2:n)#
+    {#
+        x = samps[i-1]              # This is x(t), the previous x value#
+        y = rgamma(1, t1, t2)   # This is Y_t, the potential NEW value#
+        # Now define cutoff and probability of acceptance#
+        # u must be less than p.accept to accept a new value#
+        u = runif(1, 0, 1)#
+        p.accept = min( (f(y,1.5,2)*g(x,t1,t2))/(f(x,1.5,2)*g(y,t1,t2)), 1) #
+        if(u < p.accept)#
+        {#
+            samps[i] = y # Accept the new value#
+        }else{#
+            samps[i] = x # Keep the old value#
+        }#
+    }#
+    samps#
+}
+Q
+IMH <- function(n = 1000, t1, t2)#
+{#
+    set.seed(0)#
+    samps <- numeric(n)             # Define vector to contain samples#
+    samps[1] <- rgamma(1, t1, t2)   # Define first value of sample#
+    for(i in 2:n)#
+    {#
+        x = samps[i-1]              # This is x(t), the previous x value#
+        y = rgamma(1, t1, t2)   # This is Y_t, the potential NEW value#
+        # Now define cutoff and probability of acceptance#
+        # u must be less than p.accept to accept a new value#
+        u = runif(1, 0, 1)#
+        p.accept = min( (f(y,1.5,2)*g(x,t1,t2))/(f(x,1.5,2)*g(y,t1,t2)), 1) #
+        if(u < p.accept)#
+        {#
+            samps[i] = y # Accept the new value#
+        }else{#
+            samps[i] = x # Keep the old value#
+        }#
+    }#
+    samps#
+}
+test = numeric(100)
+for(i in 1:100)#
+{#
+    test[i] = mean(IMH(t1 = 1.5, t2 = 2))#
+}#
+mean(test)
+test = IMH(t1 = 1, t2 = 1)#
+#
+mean(test)#
+mean(1/test)#
+target.Ez = sqrt(2/1.5)#
+target.E1z = sqrt(1.5/2) + (1/(2*2))
+plot(density(test))
+plot(density(test), main = "")
+plot(density(test), main = "Independence - Metropolis-Hastings with Gamma Proposal Sample")
+target.Ez = sqrt(2/1.5)
+target.E1z = sqrt(1.5/2) + (1/(2*2))
+target.Ez
+target.E1z
+mean(test)
+mean(1/test)
+test = numeric(100)#
+for(i in 1:100)#
+{#
+    test[i] = mean(IMH(t1 = 1.5, t2 = 2))#
+}
+plot(density(test), main = "Independence - Metropolis-Hastings with Gamma Proposal Sample")
+PROBLEM 6 #######
+#
+# STATUS: ALMOST FINISHED: Just test different thetas!#
+# *******************************************************#
+#
+# Given x(t):#
+# 1) Generate Y_t ~ g(y)#
+# 2) Take:#
+#
+# x(t+1) = Y_t with prob. min((f(Y_t)*g(x(t))) / (f(x(t))*g(Y_t)), 1)#
+#        = x(t) otherwise#
+#
+# Proposal density = Gamma(t1, t2)#
+#
+t1 = 1.5#
+t2 = 2#
+#
+# In the terms given in Problem 6...#
+# g(x) = Gamma(t1, t2)#
+# f(x) = Inv. Gaussian given#
+#
+f <- function(z, t1, t2)#
+{#
+    (z^-(3/2))*exp(-t1*z - (t2/z) + 2*sqrt(t1*t2) + log(sqrt(2*t2)))#
+}#
+#
+g <- function(x, s1, s2)#
+{#
+    dgamma(x, s1, s2)#
+}#
+#
+# Independent Metropolis-Hastings Algorithm#
+# n = sample size#
+# t1 = variable 1 proposal density#
+# t2 = variable 2 for proposal density#
+# theta1 and theta2 are fixed at 1.5 and 2 for all cases of f.x()#
+#
+IMH <- function(n = 1000, t1, t2)#
+{#
+    set.seed(0)#
+    samps <- numeric(n)             # Define vector to contain samples#
+    samps[1] <- rgamma(1, t1, t2)   # Define first value of sample#
+    for(i in 2:n)#
+    {#
+        x = samps[i-1]              # This is x(t), the previous x value#
+        y = rgamma(1, t1, t2)   # This is Y_t, the potential NEW value#
+        # Now define cutoff and probability of acceptance#
+        # u must be less than p.accept to accept a new value#
+        u = runif(1, 0, 1)#
+        p.accept = min( (f(y,1.5,2)*g(x,t1,t2))/(f(x,1.5,2)*g(y,t1,t2)), 1) #
+        if(u < p.accept)#
+        {#
+            samps[i] = y # Accept the new value#
+        }else{#
+            samps[i] = x # Keep the old value#
+        }#
+    }#
+    samps#
+}#
+#
+test = numeric(100)#
+for(i in 1:100)#
+{#
+    test[i] = mean(IMH(t1 = 1.5, t2 = 2))#
+}
+plot(density(test), main = "Independence - Metropolis-Hastings with Gamma Proposal Sample")
+test = numeric(100)#
+for(i in 1:100)#
+{#
+    test[i] = mean(IMH(t1 = 1.5, t2 = 2))#
+}#
+#
+plot(density(test), main = "Independence - Metropolis-Hastings with Gamma Proposal Sample")
+test = numeric(100)#
+for(i in 1:100)#
+{#
+    test[i] = mean(IMH(t1 = 1.5, t2 = 2))#
+}#
+#
+plot(density(test), main = "Independence - Metropolis-Hastings with Gamma Proposal Sample")
+mean(test)
+test = IMH(t1 = 1, t2 = 1)
+plot(density(test), main = "Independence - Metropolis-Hastings with Gamma Proposal Sample")
+test = IMH(t1 = 1, t2 = 1)
+test = IMH(t1 = 1, t2 = 1)
+mean(test)
+mean(1/test)
+plot(density(test), main = "Independence - Metropolis-Hastings with Gamma Proposed Density")
+test = numeric(100)#
+for(i in 1:100)#
+{#
+    test[i] = mean(IMH(t1 = 1.5, t2 = 2))#
+}#
+mean(test)
+test <- IMH(n = 10000, 1, 1)
+mean(test)
+mean(1/test)
+sqrt(1/1)
+sqrt(1/1) + 1/(2)
+test = IMH(n = 1000000, t1 = 1, t2 = 1)
+mean(test)
+mean(1/test)
+optMeans <- function(theta.1, theta.2){#
+	E.z <- sqrt(theta.2/theta.1)#
+	E.inv.z <- sqrt(theta.1/theta.2) + 1/(2*theta.2)#
+	cbind(E.z = E.z, E.inv.z = E.inv.z)#
+}
+values <- c(0.5, 1, 1.5, 2, 5, 7, 10)
+?rep
+rep(5, 1)
+rep(5, 5)
+rep(1, 5)
+theta.1 <- NULL
+for(i in 1:length(values)){#
+	rbind(theta.1, rep(values[i], 7 - i))#
+}
+theta.1
+i = 1
+rbind(theta.1, rep(values[i], 7 - i))
+theta.1 <- NULL
+c(theta.1, rep(values[i], 7 - i))
+values <- c(0.5, 1, 1.5, 2, 5, 7, 10)#
+theta.1 <- NULL#
+for(i in 1:length(values)){#
+	c(theta.1, rep(values[i], 7 - i))#
+}
+theta.1
+c(NULL, 1)
+i = 1
+c(theta.1, rep(values[i], 7 - i))
+i = 2
+c(theta.1, rep(values[i], 7 - i))
+cbind(theta.1, rep(values[i], 7 - i))
+i = 2
+cbind(theta.1, rep(values[i], 7 - i))
+values <- c(0.5, 1, 1.5, 2, 5, 7, 10)#
+theta.1 <- NULL#
+for(i in 1:length(values)){#
+	cbind(theta.1, rep(values[i], 8 - i))#
+}
+7!
+?factorial
+factorial(1)
+factorial(2)
+factorial(3)
+theta.1 <- vector(length = factorial(7))
+length(theta.1)
+for(i in 1:length(values)){#
+	cbind(theta.1, rep(values[i], 8 - i))#
+}
+theta.1
+for(i in 1:length(values)){#
+	temp <- rep(values[i], 8 - i)#
+	theta.1 <- c(theta.1, temp)#
+}
+theta.1
+theta.1 <- vector(length = factorial(7))
+i = 1
+theta.1 <- NULL
+for(i in 1:length(values)){#
+	temp <- rep(values[i], 8 - i)#
+	theta.1 <- c(theta.1, temp)#
+}
+length(theta.1)
+theta.1
+rep(c(1, 2, 3), 2)
+rep(1:4, 2)
+theta. 2 <- NULL#
+for(i in 1:length(values)){#
+	temp <- values[1:(8 - i)]#
+	theta.2 <- c(theta.2, temp)#
+}
+theta. 2 <- NULL
+theta.2 <- NULL
+for(i in 1:length(values)){#
+	temp <- values[1:(8 - i)]#
+	theta.2 <- c(theta.2, temp)#
+}
+theta.2
+cbind(theta.1, theta.2)
+theta.2 <- NULL#
+for(i in 1:length(values)){#
+	temp <- values[i:length(values)]#
+	theta.2 <- c(theta.2, temp)#
+}
+theta.2
+cbind(theta.1, theta.2)
+unique(cbind(theta.1, theta.2))
+length(unique(cbind(theta.1, theta.2)))
+factorial(7)
+7 + 6 + 5 + 4 + 3 + 2 + 1
+all.values <- cbind(rbind(theta.1, theta.2), rbind(theta.2, theta.1))
+all.values
+all.values <- cbind(c(theta.1, theta.2), c(theta.2, theta.1))
+all.values
+unique(all.values)
+theta.1 <- rep(values, 7)
+theta.1
+theta.2 <- rep(values, rep(7, 7))
+theta.2
+cbind(theta.1, theta.2)
+all.equal(cbind(theta.2, theta.1), all.values)
+theta.1 <- rep(values, rep(7, 7))
+theta.2 <- rep(values, 7)
+all.values <- cbind(theta.1, theta.2)
+all.values
+sapply(all.values, all.values[i, ])
+sapply(all.values, function(i) all.values[i, ])
+sapply(all.values, function(i) unlist(all.values[i, ]))
+unlist(sapply(all.values, function(i) unlist(all.values[i, ])))
+results <- matrix(ncol = 4, ncol = nrow(all.values))
+results <- matrix(ncol = 4, nrow = nrow(all.values))
+dim(results)
+all.values[1,]
+results[1, ] <- c(1, 1, 1, 1)
+results[1:5,]
+for(i in 1:5){
+t1 <- all.values[i, 1]#
+	t2 <- all.values[i, 2]#
+	temp <- IMH(n = 1000, t1 = t1, t2 = t2)#
+	E.z <- mean(temp)#
+	target.E.z <- sqrt(t2/t1)#
+	E.inv.z <- mean(1/temp)#
+	target.E.inv.z <- sqrt(t1/t2) + 1/(2*t2)#
+	results[i, ] <- c(E.z, target.E.z, E.inv.z, target.E.inv.z)#
+}
+results[1:5,]
+test <- IMH(1000, t1 = all.values[1, 1], t2 = all.values[ 1, 2])
+mean(test)
+mean(1/test)
+results <- matrix(ncol = 4, nrow = nrow(all.values))#
+for(i in 1:nrow(all.values)){#
+	t1 <- all.values[i, 1]#
+	t2 <- all.values[i, 2]#
+	temp <- IMH(n = 1000, t1 = t1, t2 = t2)#
+	E.z <- mean(temp)#
+	target.E.z <- sqrt(t2/t1)#
+	E.inv.z <- mean(1/temp)#
+	target.E.inv.z <- sqrt(t1/t2) + 1/(2*t2)#
+	results[i, ] <- c(E.z, target.E.z, E.inv.z, target.E.inv.z)#
+}
+results
+colnames(results) <- c("E.z", "target.E.z", "E.inv.z", "target.E.inv.z")
+head(results)
+results <- matrix(ncol = 4, nrow = nrow(all.values))#
+for(i in 1:nrow(all.values)){#
+	t1 <- all.values[i, 1]#
+	t2 <- all.values[i, 2]#
+	temp <- IMH(n = 1000, t1 = t1, t2 = t2)#
+	E.z <- mean(temp)#
+	target.E.z <- sqrt(t2/t1)#
+	E.inv.z <- mean(1/temp)#
+	target.E.inv.z <- sqrt(t1/t2) + 1/(2*t2)#
+	abs.diff.E.z <- abs(E.z - target.E.z)#
+	abs.diff.E.inv.z <- abs(E.inv.z - target.E.inv.z)#
+	results[i, ] <- c(E.z, target.E.z, abs.diff.E.z, E.inv.z, target.E.inv.z, abs.diff.E.inv.z)#
+}
+results <- matrix(ncol = 4, nrow = nrow(all.values))
+t1 <- all.values[i, 1]
+t2 <- all.values[i, 2]
+temp <- IMH(n = 1000, t1 = t1, t2 = t2)
+E.z <- mean(temp)
+target.E.z <- sqrt(t2/t1)
+E.inv.z <- mean(1/temp)
+target.E.inv.z <- sqrt(t1/t2) + 1/(2*t2)
+abs.diff.E.z <- abs(E.z - target.E.z)
+abs.diff.E.inv.z <- abs(E.inv.z - target.E.inv.z)
+c(E.z, target.E.z, abs.diff.E.z, E.inv.z, target.E.inv.z, abs.diff.E.inv.z)
+i
+results <- matrix(ncol = 6, nrow = nrow(all.values))
+for(i in 1:nrow(all.values)){#
+	t1 <- all.values[i, 1]#
+	t2 <- all.values[i, 2]#
+	temp <- IMH(n = 1000, t1 = t1, t2 = t2)#
+	E.z <- mean(temp)#
+	target.E.z <- sqrt(t2/t1)#
+	E.inv.z <- mean(1/temp)#
+	target.E.inv.z <- sqrt(t1/t2) + 1/(2*t2)#
+	abs.diff.E.z <- abs(E.z - target.E.z)#
+	abs.diff.E.inv.z <- abs(E.inv.z - target.E.inv.z)#
+	results[i, ] <- c(E.z, target.E.z, abs.diff.E.z, E.inv.z, target.E.inv.z, abs.diff.E.inv.z)#
+}
+results
+colnames(results) <- c("E.z", "target.E.z", "abs.diff.E.z", "E.inv.z", "target.E.inv.z", "abs.diff.E.inv.z")
+results
+sort(c(1,2,3))
+order(c(1,2,3))
+order(c(2,3,4))
+sort(c(2,3,4))
+which.min(results[ ,3])
+which.min(results[ ,6])
+results <- cbind(all.values, results)
+results
+results[18, ]
+min(results[, 5])
+min(results[ , 7])
+min(results[ , 8])
+IMH <- function(n = 1000, t1, t2)#
+{#
+    set.seed(0)#
+    samps <- numeric(n)             # Define vector to contain samples#
+    samps[1] <- rgamma(1, t1, t2)   # Define first value of sample#
+    for(i in 2:n)#
+    {#
+        x = samps[i-1]              # This is x(t), the previous x value#
+        y = rgamma(1, t1, t2)   # This is Y_t, the potential NEW value#
+        # Now define cutoff and probability of acceptance#
+        # u must be less than p.accept to accept a new value#
+        u = runif(1, 0, 1)#
+        # p.accept = min( (f(y,1.5,2)*g(x,t1,t2))/(f(x,1.5,2)*g(y,t1,t2)), 1) #
+        p.accept = min( (f(y,t1,t2)*g(x,t1,t2))/(f(x,t1,t2)*g(y,t1,t2)), 1) #
+        if(u < p.accept)#
+        {#
+            samps[i] = y # Accept the new value#
+        }else{#
+            samps[i] = x # Keep the old value#
+        }#
+    }#
+    samps#
+}
+results <- matrix(ncol = 6, nrow = nrow(all.values))#
+for(i in 1:nrow(all.values)){#
+	t1 <- all.values[i, 1]#
+	t2 <- all.values[i, 2]#
+	temp <- IMH(n = 1000, t1 = t1, t2 = t2)#
+	E.z <- mean(temp)#
+	target.E.z <- sqrt(t2/t1)#
+	E.inv.z <- mean(1/temp)#
+	target.E.inv.z <- sqrt(t1/t2) + 1/(2*t2)#
+	abs.diff.E.z <- abs(E.z - target.E.z)#
+	abs.diff.E.inv.z <- abs(E.inv.z - target.E.inv.z)#
+	results[i, ] <- c(E.z, target.E.z, abs.diff.E.z, E.inv.z, target.E.inv.z, abs.diff.E.inv.z)#
+}
+colnames(results) <- c("E.z", "target.E.z", "abs.diff.E.z", "E.inv.z", "target.E.inv.z", "abs.diff.E.inv.z")#
+#
+results <- cbind(all.values, results)
+which.min(results[, 5])
+which.min(results[, 8])
+results[41, ]
+results[24, ]
+results
+results[8:9, ]
+which.min(results[1:35, 5])
+results[33, ]
+which.min(results[1:35, 8])
+results[24, ]
+IMH <- function(n = 1000, t1, t2)#
+{#
+    set.seed(0)#
+    samps <- numeric(n)             # Define vector to contain samples#
+    samps[1] <- rgamma(1, t1, t2)   # Define first value of sample#
+    for(i in 2:n)#
+    {#
+        x = samps[i-1]              # This is x(t), the previous x value#
+        y = rgamma(1, t1, t2)   # This is Y_t, the potential NEW value#
+        # Now define cutoff and probability of acceptance#
+        # u must be less than p.accept to accept a new value#
+        u = runif(1, 0, 1)#
+        p.accept = min( (f(y,1.5,2)*g(x,t1,t2))/(f(x,1.5,2)*g(y,t1,t2)), 1) #
+        # p.accept = min( (f(y,t1,t2)*g(x,t1,t2))/(f(x,t1,t2)*g(y,t1,t2)), 1) #
+        if(u < p.accept)#
+        {#
+            samps[i] = y # Accept the new value#
+        }else{#
+            samps[i] = x # Keep the old value#
+        }#
+    }#
+    samps#
+}
+results <- matrix(ncol = 6, nrow = nrow(all.values))#
+for(i in 1:nrow(all.values)){#
+	t1 <- all.values[i, 1]#
+	t2 <- all.values[i, 2]#
+	temp <- IMH(n = 1000, t1 = t1, t2 = t2)#
+	E.z <- mean(temp)#
+	target.E.z <- sqrt(t2/t1)#
+	E.inv.z <- mean(1/temp)#
+	target.E.inv.z <- sqrt(t1/t2) + 1/(2*t2)#
+	abs.diff.E.z <- abs(E.z - target.E.z)#
+	abs.diff.E.inv.z <- abs(E.inv.z - target.E.inv.z)#
+	results[i, ] <- c(E.z, target.E.z, abs.diff.E.z, E.inv.z, target.E.inv.z, abs.diff.E.inv.z)#
+}#
+#
+colnames(results) <- c("E.z", "target.E.z", "abs.diff.E.z", "E.inv.z", "target.E.inv.z", "abs.diff.E.inv.z")#
+#
+results <- cbind(all.values, results)
+which.min(results[1:35, 5])
+results[18, ]
+plot(density(func.a()), main = "")
+func.a <- function(n = 100, p = 0.3, lam = 2)#
+{#
+    r <- rbinom(n, 1, p)#
+    x <- rpois(n, lam*r)#
+    x#
+}#
+func.a()
+plot(density(func.a()), main = "")
+plot(density(func.a()), main = "")
+plot(density(func.a()), main = "")
+plot(density(func.a()), main = "Random Sample for ZIP Model, p= 0.3, lambda = 2")

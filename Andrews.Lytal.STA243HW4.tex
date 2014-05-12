@@ -198,8 +198,30 @@ where $a$ and $b$ are known parameters, and $r = (r_1, \dots, r_n)$. It follows 
 
 We wish to sample from the posterior pdf $f(\lambda, p, r | x)$ using the Gibbs sampler.\
 \begin{description}
-\item[a.]
-\item[b.]
+\item[a.] We generate a random sample of size n = 100 for the ZIP model using parameters p = 0.3 and $\lambda = 2$. A density plot of this sampe is below.
+\[\includegraphics[scale = 0.50]{STA243HW4Q5Plot1.pdf}\]
+
+\item[b.] We show that the following statements hold:
+\begin{description}
+\item[i.] $(\lambda | p, \textbf{r}, \textbf{x}) \sim \text{Gamma}(a + \sum_i x_i, b+\sum_i r_i)$\\
+\[p(\lambda | p, \textbf{r}, \textbf{x}) \propto p(\lambda|p) \cdot p(x_i | \textbf{r}, \lambda, p)\]
+\[\propto \text{Gamma}(a, b) \cdot \prod_{i = 1}^n \text{Poisson}(\lambda r_i)\]
+\[\propto \frac{b^a}{\Gamma(a)} \lambda^{a - 1} e^{-b\lambda}\cdot \prod_{i = 1}^n \frac{(\lambda r_i)^{x_i}}{x_i!}e^{-\lambda r_i}\]
+\[\propto \frac{b^a}{\Gamma(a)} \lambda^{a - 1} e^{-b\lambda} \cdot \frac{\lambda^{\sum_{i=1}^n x_i} \prod_{i=1}^n (r_i^{x_i})}{\prod_{i = 1}^n x_i !} e^{-\lambda \sum_{i = 1}^n r_i} \]
+\[\propto \lambda^{a - 1} e^{-b\lambda} \cdot \lambda^{\sum_{i = 1}^n x_i } e^{-\lambda \sum_{i = 1}^n r_i}\]
+\[\propto \lambda^{a + \sum_{i = 1}^n x_i - 1} \cdot e^{-(b + \sum_{i = 1}^n r_i)\lambda}\]
+
+
+\[\propto \Gamma \left(a + \sum_{i = 1}^n x_i, b + \sum_{i = 1}^n r_i \right) \]
+
+\item[ii.] $(p| \lambda, \textbf{r}, \textbf{x}) \sim \text{Beta}(1 + \sum_i r_i, n + 1 - \sum_i r_i)$ \\
+\[p(p| \lambda, \textbf{r}, \textbf{x}) \propto p(p) \cdot (\textbf{r} | p, \lambda) \]
+\[\propto \frac{1}{1 - 0} \cdot \prod_{i = 1}^n p(r_i | p, \lambda)\]
+\[\propto \prod_{i = 1}^n p^{r_i} (1 - p)^{1 - r_i}  = p^{\sum_{i = 1}^n r_i} (1 - p)^{n - \sum_{i=1}^n r_i}\]
+
+\[\propto \text{Beta}\left (\sum_{i=1}^n r_i + 1, n - \sum_{i=1}^n r_i + 1\right )\]
+\item[iii.] $(r_i | \lambda, p, \textbf{x}) \sim \text{Bernoulli} \left(\frac{pe^{-\lambda}}{pe^{-\lambda} + (1 - p) I_{\{x_i = 0\}}} \right)$
+\end{description}
 \item[c.]
 \end{description}
 
@@ -232,7 +254,7 @@ Our sample of n = 1,000,000 yields the following estimates of the means:
 
 From this, we see that the Independence - Metropolis - Hastings algorithm performed pretty well, as the estimates based on our sample very, very similar to the theoretical values, to several decimal places. The remaining difference is likely due to the sample size, and we believe that the sample values will approach the theoretical values as n $\rightarrow \infty$. Thus, it appears that our sample is relatively accurate. \\
 
-In addition to this $\theta_1$ and $\theta_2$, we try several different combinations of $\theta_1$ and $\theta_2$ in order to see if we can get accurate samples. For computational ease, we now let n = 1000 as opposed to n = 1000000 
+In addition to this $\theta_1$ and $\theta_2$, we try several different combinations of $\theta_1$ and $\theta_2$ in order to see if we can get accurate samples. For computational ease, we now let n = 1000 as opposed to n = 1000000.
 
 \end{description}
 \end{document}
