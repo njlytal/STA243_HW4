@@ -55,25 +55,39 @@ var(test.a)
 # n = samples
 # h.avg = E[h(X)] = log(2)
 # c.avg = E[c(Y)] = 1.5
+
 var.cov <- function(n, h.avg = log(2), c.avg = 1.5)
-{
-    browser()
-    x <- runif(n, 0, 1)
-    h <- (1/(1+x))
+# {
+    # x <- runif(n, 0, 1)
+    # h <- (1/(1+x))
     
-    c <- (1+x)
+    # c <- (1+x)
     
-    var = (1/(n*(n-1)))*sum((x - c.avg)^2)
-    #cov = cov(h,c)
-    cov = (1/(n*(n-1)))*sum((h - h.avg)*(c - c.avg))
-    out = data.frame(var, cov)
-    out
+    # var = (1/(n*(n-1)))*sum((x - c.avg)^2)
+    # #cov = cov(h,c)
+    # cov = (1/(n*(n-1)))*sum((h - h.avg)*(c - c.avg))
+    # out = data.frame(var, cov)
+    # out
+# }
+
+
+getb <- function(n, h.avg = log(2), c.avg = 1.5){
+  x <- runif(n, 0, 1)
+  h <- (1/(1 + x))
+  c <- (1 + x)
+  b <- cov(h, c)/var(c)
+  b
 }
 
-v.c = var.cov(1500, log(2), 1.5)
+b <- getb(1500, log(2), 1.5)
+
+# variance for I_MC
+
+mc.var <- (1/(n*(n-1)))*sum((func.a() - log(2))^2)
+# v.c = var.cov(1500, log(2), 1.5)
 
 # The optimal b is Cov(h(X),c(Y))/Var(c(Y))
-b = v.c[2]/v.c[1]
+# b = v.c[2]/v.c[1]
 
 # This estimates I_CV
 # n = samples
