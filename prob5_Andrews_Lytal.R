@@ -33,14 +33,15 @@ func.c <- function(samps = 1e5, n = 100, a = 1, b = 1, p.start = 0.3, lam.start 
     p <- numeric(samps) # Records values of p estimated in all iterations
     r <- numeric(n) # Records the r used in the current iteration
     
-    # Initialize values (?)
+    # Initialize values
     p[1] = p.start
     lam[1] = lam.start
     r <- rbinom(n, 1, p.start)
     for(i in 2:samps)
     {   
-        lam[i] = rgamma(1, a + sum(x), b + sum(r))
-        p[i] = rbeta(1, 1 + sum(r), n + 1 - sum(r))
+        lam[i] = rgamma(1, a + sum(x), b + sum(r)) # Conditional of lambda
+        p[i] = rbeta(1, 1 + sum(r), n + 1 - sum(r)) # Conditional of p
+        # Conditional of r given the above newly generated lambda and p
         r = rbinom(n, 1, (p[i]*exp(-lam[i])) / ((p[i])*exp(-lam[i]) + (1-p[i])*(x == 0)))
     }
     data.frame(lam, p)
