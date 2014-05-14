@@ -182,7 +182,29 @@ where $\rho$ is the correlation coefficient between $h(\tilde{x})$ and $c(\tilde
 
 \item[4.] We consider a common application in statistics: three different treatments are to be compared by applying them to a randomly selected experimental units. However; instead of the usualy assumption associated with $e_{ij}$ in the typical analysis of variance methods of comparison, we assume that the $e_{ij}$  have independent and identical double exponential distributions centered on zero.
 \begin{itemize}
-\item[a.]
+\item[a.] Here we have the model:
+\[y_{ij} = \mu + \alpha_i + e_{ij} \ \ \ \ 1 \le i \le 3, \ \ \ \ 1 \leq j \leq n_i\]
+\[e_{ij} \sim \ \ iid \ \frac{1}{2\sigma} \mathrm{exp} \left(- \frac{|e_{ij}|}{\sigma} \right), \ \ \ \ -\infty < e_{ij} < \infty\]
+
+Where $\alpha_i$ corresponds to the treatment i effect, and the treatment means are denoted:
+\[\mu_i = \mu +  \alpha_i\]
+
+We are interested in testing whether or not there are no treatment effects, that is $\text{H}_o: \alpha_1 = \alpha_2 = \alpha_3 = 0$ vs. $\text{H}_a:$ not all $\alpha_i$ = 0. To do so, we use the likelihood-ratio test statistic. In order to derived the likelihood ratio, we first look at the distributions of $e_{ij}$ and $y_{ij}$. As stated above, we have that the error term is distributed as Laplace: $e_{ij} \sim \text{Laplace}(0, \sigma)$ and thus: 
+
+\[e_{ij} \sim \ \ iid \ \frac{1}{2\sigma} \mathrm{exp} \left(- \frac{|e_{ij}|}{\sigma} \right), \ \ \ \ -\infty < e_{ij} < \infty\]
+
+Thus, from properties of the Laplace distribution, it follows that since $e_{ij}$ is distributed Laplace, and $y_{ij}$ is a linear combination of $e_{ij}$, then $y_{ij}$ is also distributed Laplace as follows:
+
+\[f(y|\mu_1, \mu_2, \mu_3, \sigma) \sim \frac{1}{2\sigma} \mathrm{exp} \left( -\frac{|y_{ij} - \mu_i|}{\sigma}\right)  \]
+
+The likelihood-ratio test statistic is defined as:
+\[\Lambda = \frac{}{}\]
+Now, we can implement the Monte Carlo test to test whether or not the null hypothesis holds. We carry out the Monte Carlo test as follows:
+\begin{description}
+\item[1.] Sample y
+\item[2.] Compute the likelihood ratio test statistic $\Lambda$
+\item[3.] Repeat a large number of times. 
+\end{description}
 \item[b.] Another computer-intensive test that we could use even if we make not assumptions about the distribution of $e_{ij}$ is the permutation test, also known as the randomization test. The permutation test is a non-parametric test, and thus does not rely on any parameter assumptions to yield accurate results. The main application of the permutation test is to two-sample problems, but we can apply the approch to this three - treatment problem as well. We denote the variables as treatment one being denoted as $x_1, \dots, x_n  \ \ iid \ \ \sim G$, treatment two is $y_1, \dots, y_m, \ \ iid \ \ \sim F$, and treatment three as $z_1, \dots, z_k \ \ iid \ \ \sim H$. We would test the hypothesis:
 \[\text{H}_o: F = G = H \ \ \text{vs.} \ \ \text{H}_a: \text{not all distributions are equal}\]
 using the test statistic:

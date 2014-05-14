@@ -56,7 +56,7 @@ var(test.a)
 # h.avg = E[h(X)] = log(2)
 # c.avg = E[c(Y)] = 1.5
 
-var.cov <- function(n, h.avg = log(2), c.avg = 1.5)
+#var.cov <- function(n, h.avg = log(2), c.avg = 1.5)
 # {
     # x <- runif(n, 0, 1)
     # h <- (1/(1+x))
@@ -132,4 +132,6 @@ y <- 4.002654e-7
 
 # don't use the formula for variance and covariance in calculating
 # b, instead just use cov(h,c)/var(c), but you can use the formula 
-# for caluclating and comparing the variances of our estimators. 
+# for caluclating and comparing the variances of our estimators. '
+
+
