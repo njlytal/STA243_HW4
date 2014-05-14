@@ -159,8 +159,10 @@ where $\hat{\theta}_{MC} = \frac{1}{n} \sum_{i = 1}^n c(U_i)$.\\
 
 Recall from part a that $h(x)  = \frac{1}{1 + x}$ and E[h(x)] = ln 2. What is left is to find E[c(U)] and cov(h(x), c(U)). Recall that $c(x) = 1 + x$ and since we are on the range of (0,1), we have that the expected value of c(x) is equal to 1.5. Thus, to find our optimal b, we first draw 1500 x's from $x \sim \mathrm{Unif}(0, 1)$, then plug these x's into $h(x) = \frac{1}{1 + x}$ and $c(x) = 1 + x$. We then estimate the covariance between these generated $h(x)$ and $c(x)$'s, and the variance of $c(x)$. In doing so, we obtain the following estimate of b: $b_{OPT} = -0.4747049$. 
 \item[c.] We estimate the variances of $\hat{I}_{MC}$ and $\hat{I}_{CV}$ by taking 1,000,000 samples from each in R and obtain:
- \[\mathrm{var}(\hat{I}_{MC}) = 1.274619^{e-05}\] 
+
+ \[\mathrm{var}(\hat{I}_{MC}) = 1.274619e^{-05}\] 
 \[\mathrm{var}(\hat{I}_{CV}) = 4.002654e^{-07}\]
+
 Thus, we see that the variance of $\hat{I}_{CV}$ is much smaller than the variance of $\hat{I}_{MC}$, as we would have hoped.  
 \item[d.] Although we have already designed an estimator, $\hat{I}_{CV}$, which is much more efficient than our original estimator, $\hat{I}_{MC}$, it is still possible to design a new estimator for $I$ that would have a smaller variance that $\hat{I}_{CV}$. To do so, we would simply add another control variate, so that instead of just one control variate ($c(x) = 1 + x)$, we would have two control variates and thus estimate two b's. Thus, our estimate would be obtained by finding $b_1^*$ and $b_2^*$ that minimize the variance of the following function:
 \[\hat{I}_{CV} = \hat{I}_{MC} - b_1(\hat{\theta}_{1MC} - \theta_1) - b_2(\hat{\theta}_{2MC} - \theta_2)\]
@@ -201,28 +203,42 @@ We wish to sample from the posterior pdf $f(\lambda, p, r | x)$ using the Gibbs 
 \item[a.] We generate a random sample of size n = 100 for the ZIP model using parameters p = 0.3 and $\lambda = 2$. A density plot of this sampe is below.
 \[\includegraphics[scale = 0.50]{STA243HW4Q5Plot1.pdf}\]
 
-\item[b.] We show that the following statements hold:
+\item[b.] We show that the following conditional distributions hold. In doing so, note that we can prove these up to a constant of proportionality, because the normalizing integrals that would make the following true, get rid of the variables that are ``given" in each. Another way of thinking of this is that we can look at $f(\textbf{x}, \textbf{r}, \lambda, p)$ for each of (i), (ii), and (iii) given below, and ignore the variables that are on the right hand side of the ``given" line. This is because, since these variables are given, we can just treat them as constants. 
+
 \begin{description}
 \item[i.] $(\lambda | p, \textbf{r}, \textbf{x}) \sim \text{Gamma}(a + \sum_i x_i, b+\sum_i r_i)$\\
-\[p(\lambda | p, \textbf{r}, \textbf{x}) \propto p(\lambda|p) \cdot p(x_i | \textbf{r}, \lambda, p)\]
-\[\propto \text{Gamma}(a, b) \cdot \prod_{i = 1}^n \text{Poisson}(\lambda r_i)\]
-\[\propto \frac{b^a}{\Gamma(a)} \lambda^{a - 1} e^{-b\lambda}\cdot \prod_{i = 1}^n \frac{(\lambda r_i)^{x_i}}{x_i!}e^{-\lambda r_i}\]
-\[\propto \frac{b^a}{\Gamma(a)} \lambda^{a - 1} e^{-b\lambda} \cdot \frac{\lambda^{\sum_{i=1}^n x_i} \prod_{i=1}^n (r_i^{x_i})}{\prod_{i = 1}^n x_i !} e^{-\lambda \sum_{i = 1}^n r_i} \]
-\[\propto \lambda^{a - 1} e^{-b\lambda} \cdot \lambda^{\sum_{i = 1}^n x_i } e^{-\lambda \sum_{i = 1}^n r_i}\]
-\[\propto \lambda^{a + \sum_{i = 1}^n x_i - 1} \cdot e^{-(b + \sum_{i = 1}^n r_i)\lambda}\]
+\[(\lambda | p, \textbf{r}, \textbf{x}) \propto \lambda^{a - 1} e^{-b\lambda} e^{-\lambda \sum_{i = 1}^n r_i} \lambda^{\sum_{i = 1}^n x_i} \]
 
+\[\Rightarrow (\lambda | p, \textbf{r}, \textbf{x}) \propto \lambda^{a + \sum_{i =1}^n x_i  - 1} e^{-(b + \sum_{i = 1}^n r_i)\lambda}\]
 
-\[\propto \Gamma \left(a + \sum_{i = 1}^n x_i, b + \sum_{i = 1}^n r_i \right) \]
-
+\[\Rightarrow (\lambda | p, \textbf{r}, \textbf{x}) \propto \sim \Gamma \left(a + \sum_{i = 1}^n, b + \sum_{i = 1}^n\right)\]
 \item[ii.] $(p| \lambda, \textbf{r}, \textbf{x}) \sim \text{Beta}(1 + \sum_i r_i, n + 1 - \sum_i r_i)$ \\
-\[p(p| \lambda, \textbf{r}, \textbf{x}) \propto p(p) \cdot (\textbf{r} | p, \lambda) \]
-\[\propto \frac{1}{1 - 0} \cdot \prod_{i = 1}^n p(r_i | p, \lambda)\]
-\[\propto \prod_{i = 1}^n p^{r_i} (1 - p)^{1 - r_i}  = p^{\sum_{i = 1}^n r_i} (1 - p)^{n - \sum_{i=1}^n r_i}\]
+\[(p| \lambda, \textbf{r}, \textbf{x}) \propto \prod_{i = 1}^n p^{r_i} (1 - p)^{1 - r_i}\]
+\[\Rightarrow (p| \lambda, \textbf{r}, \textbf{x}) \propto p^{\sum_{i = 1}^n r_i} (1 - p)^{n - \sum_{i = 1}^n r_i}\]
+\[\Rightarrow (p| \lambda, \textbf{r}, \textbf{x}) \propto \text{Beta} \left (1 + \sum_{i = 1}^n r_i, n + 1 - \sum_{i=1}^n r_i\right)\]
 
-\[\propto \text{Beta}\left (\sum_{i=1}^n r_i + 1, n - \sum_{i=1}^n r_i + 1\right )\]
+
 \item[iii.] $(r_i | \lambda, p, \textbf{x}) \sim \text{Bernoulli} \left(\frac{pe^{-\lambda}}{pe^{-\lambda} + (1 - p) I_{\{x_i = 0\}}} \right)$
+
+\[(r_i | \lambda, p, \textbf{x}) \propto \prod_{i = 1}^n \frac{e^{-\lambda r_i}(\lambda r_i)^{x_i}}{x_i!} p^{r_i} (1 - p)^{1 - r_i} \]
+
+\[(r_i | \lambda, p, \textbf{x}) \propto  e^{-\lambda \sum_{i = 1}^n r_i} \sum_{i = 1}^n(r_i)^{x_i}p^{\sum_{i = 1}^n r_i} (1 - p)^{n - \sum_{i = 1}^n r_i}\]
+Here we see that we have a Bernoulli distribution, with probability of success defined as:
+\[\frac{pe^{-\lambda}}{pe^{-\lambda} + (1 - p) I_{\{x_i = 0\}}}\]
+
+This is because $r_i$ is Bernoulli, and thus can either take 0 or 1 values. So thus, we have that $(r_i | \lambda, p, \textbf{x})$ can either take the following values, for each given i:
+
+\[(r_i | \lambda, p, \textbf{x})   = \left\{ 
+\begin{array}{l l}
+ e^{-\lambda}p & \quad \text{if } r_i = 1\\
+ (1 - p)I_{\{x_i = 0\}}& \quad \text{it } r_i = 0
+\end{array} \right.\]
+
+The, the probability of success is the value when $r_i = 1$ over the values of $r_i = 1$ and $r_i = 0$. Thus, we are left with:
+
+\[(r_i | \lambda, p, \textbf{x}) \sim \text{Bernoulli} \left(\frac{pe^{-\lambda}}{pe^{-\lambda} + (1 - p) I_{\{x_i = 0\}}} \right)\]
 \end{description}
-\item[c.]
+\item[c.] We implement the Gibbs sampler to generate a large (dependent) sample from the posterior distribution, and use this to construct 95\% Bayesian confidence intervals for $p$ and $\lambda$. 
 \end{description}
 
 %%%%%%%%
@@ -239,7 +255,7 @@ A random variable Z has an inverge Gaussian distribution it it has density
 where $\theta_1 0$ and $\theta_2 >0$ are parameters. It can be shown that 
 \[E(Z) = \sqrt{\frac{\theta_2}{\theta_1}} \ \ \ \ \mathrm{and} \ \ \ \ E\left(\frac{1}{Z} \right)= \sqrt{\frac{\theta_1}{\theta_2}} + \frac{1}{2\theta_2}\]
 
-We let $\theta_1 = 1.5$ and $\theta_2 = 2$, and draw a sample of size 1,000 using the independence-Metropolis-Hastings algroithm. We use a Gamma distribution as the proposal density. Below is a density plot of the sample drawn using the Independence-Metropolis-Hastings algorithm with a Gamma distribution as the proposal density. 
+We let $\theta_1 = 1.5$ and $\theta_2 = 2$, and draw a sample of size 1,000 using the independence-Metropolis-Hastings algroithm. We use a Gamma(1.5, 2) distribution as the proposal density. Below is a density plot of the sample drawn using the Independence-Metropolis-Hastings algorithm with a Gamma distribution as the proposal density. 
 
 \[\includegraphics[scale = 0.50]{STA243HW4Q6Plot1.pdf}\]
 
@@ -254,9 +270,25 @@ Our sample of n = 1,000,000 yields the following estimates of the means:
 
 From this, we see that the Independence - Metropolis - Hastings algorithm performed pretty well, as the estimates based on our sample very, very similar to the theoretical values, to several decimal places. The remaining difference is likely due to the sample size, and we believe that the sample values will approach the theoretical values as n $\rightarrow \infty$. Thus, it appears that our sample is relatively accurate. \\
 
-In addition to this $\theta_1$ and $\theta_2$, we try several different combinations of $\theta_1$ and $\theta_2$ in order to see if we can get accurate samples. For computational ease, we now let n = 1000 as opposed to n = 1000000.
+Fixing our $\theta_1 = 1.5$ and $\theta_2 = 2$, we try several different Gamma distributions to see if we can get an accurate sample.  For computational ease, we now let n = 1000 as opposed to n = 1000000. Here, we choose distributions Gamma(a, b) where a and b take every possible pair-wise pairing of the values 0.5, 1, 1.5, 2, 2.5, 3, 4 , 5. In carrying out the Independence-Metropolis-Hastings algorithm for all possible pairs, we find that the best pairing that produced the minimum absolute differences were a = 1.5 and b = 2.0 to minimize the absolute differece between E(Z) and $\hat{E}(Z)$, and a = 3, b = 3 to minimize the absolute difference between $E\left(\frac{1}{Z}\right)$ and  $\hat{E}\left(\frac{1}{Z}\right)$. However, we note that almost all of the different Gamma distributions used appeard to provide accurate samples, with the largest differences being when Gamma(5, 0.5) was used, with an absolute difference of 1.5401086 for E(Z) and 0.6651700 for E$\left( \frac{1}{Z} \right)$. Below we compare the Gamma distributions with the original and their estimates. Here, we compare the estimates when n = 1000 for all. 
+\[
+\begin{tabular}{rrrrrrrr}
+\multicolumn{8}{c}{\textbf{Gamma(a, b) Sample Comparisons}}\\
+  \hline
+ a & b & E.z & target.E.z & abs. diff. & E.inv.z & target.E.inv.z & abs. diff. \\ 
+  \hline
+1.5 & 2.0 & 1.133058 & 1.154701 & 0.021643 & 1.123595 & 1.116025 & 0.007569 \\ 
+2.0 & 1.5 & 1.154747 & 1.154701 & 0.000047 & 1.120085 & 1.116025 & 0.004060 \\ 
+3.0 & 3.0 & 1.166071 & 1.154701 & 0.011370 & 1.116180 & 1.116025 & 0.000155 \\ 
+   \hline
+\end{tabular}\]
+
+Here we see that with a sample size of n = 1000 for each different Gamma(a,b) distribution, the sample from Gamma(2.0, 1.5) was the most accurate, followed by Gamma(3,3). Gamma(1.5, 2) was also quite accurate, but we note that, in order to see as accurate results as mentioned previously, we would need to use a much larger sample size. 
 
 \end{description}
 \end{document}
+
+
+
 
 

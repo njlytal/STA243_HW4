@@ -1,110 +1,3 @@
-nu = 0.1
-out = nu*exp(((g.x-1.5)^2)/(2*nu^2) - ((g.x^2)/2))*indicator
-indicator = 0
-out = nu*exp(((g.x-1.5)^2)/(2*nu^2) - ((g.x^2)/2))*indicator
-out
-g.x = rnorm(1, 1.5, nu^2) # Sample from g(x)
-g.x
-out = nu*exp(((g.x-1.5)^2)/(2*nu^2) - ((g.x^2)/2))*indicator
-out
-sum(nu1==0)
-sum(nu2==0)
-sum(nu3==0)
-indicator = 1
-g.x = 1
-nu = 1
-out = nu*exp(((g.x-1.5)^2)/(2*nu^2) - ((g.x^2)/2))*indicator
-out
-g.x = 2
-out = nu*exp(((g.x-1.5)^2)/(2*nu^2) - ((g.x^2)/2))*indicator
-out
-plot(density(nu3))
-PROBLEM 3 #######
-#
-# STATUS: Need to find optimal b, rest is done!#
-# **************************************************#
-#
-# Let I = 1/sqrt(2*pi) int[1-2](exp(-(x^2)/2) dx)#
-#
-# *** A ***#
-#
-# Let h(x) = (1/(1+x)), U1,...,Un ~IID~ Unif[0,1]#
-# Estimate I using...#
-# I_MC = (1/n) sum(h(Ui)), n = 1500#
-#
-# n = samples to take#
-# This estimates I_MC#
-func.a <- function(n = 1500)#
-{#
-    x <- runif(n, 0, 1)#
-    sample <- (1/(1+x))#
-    out <- (1/n)*sum(sample)#
-    out#
-}
-Result: About 0.696.#
-# Actual: ln(2) = 0.693 - Seems to work fine#
-# This tests the variance of func.a#
-# We want to improve on this in subsequent parts#
-test.a = numeric(1e4)#
-for(i in 1:1e4)#
-{#
-    test.a[i] = func.a()#
-}#
-#
-var(test.a)
-func.a
-func.a(n = 1000000)
-ln(2)
-log(2)
-?log
-getb <- function(n, h.avg = log(2), c.avg = 1.5){#
-  x <- runif(n, 0, 1)#
-  h <- (1/(1 + x))#
-  c <- (1 + x)#
-  b <- cov(h, c)/var(c)#
-  b#
-}
-b <- getb(1000000, log(2), 1.5)
-b
-getb <- function(n, h.avg = log(2), c.avg = 1.5){#
-  x <- runif(n, 0, 1)#
-  h <- (1/(1 + x))#
-  c <- (1 + x)#
-  b <- cov(h, c)/var(c)#
-  b#
-}#
-#
-b <- getb(1000000, log(2), 1.5)
-b
-func.a
-func.a()
-b <- getb(1500, log(2), 1.5)
-b
-mc.samp <- func.a()
-mc.var <- (1/(n*(n-1)))*sum((mc.samp - mean(mc.samp))^2)
-mc.var
-var(mc.samp)
-mc.samp
-test.a = numeric(1e4)#
-for(i in 1:1e4)#
-{#
-    test.a[i] = func.a()#
-}
-mc.var <- (1/(n*(n-1)))*sum((func.a - log(2))^2)
-mc.var <- (1/(n*(n-1)))*sum((func.a() - log(2))^2)
-mc.var
-var(test.a)
-mc.var <- (1/(n*(n-1)))*sum((func.a() - log(2))^2)
-mc.var
-var(test.a)
-{#
-    x <- runif(n, 0, 1)#
-    h.x <- (1/(1+x))#
-    c.x <- (1+x)#
-    e.c.u <- 1.5 # (Ranges from 1+0 to 1+1 with even prob, so 1.5)#
-    out <- (1/n)*sum(h.x) - b*((1/n)*sum(c.x) - e.c.u)#
-    out#
-}
 func.b(1500, b)
 func.b <- function(n = 1500, b)#
 {#
@@ -937,3 +830,176 @@ colnames(results) <- c("E.z", "target.E.z", "abs.diff.E.z", "E.inv.z", "target.E
 #
 results <- cbind(all.values, results)
 head(results)
+values <- c(0.5, 1, 1.5, 2, 2.5, 3, 4, 5)#
+#
+a <- rep(values, rep(8, 8))#
+b <- rep(values, 8)#
+all.values <- cbind(a, b)#
+#
+results <- matrix(ncol = 6, nrow = nrow(all.values))#
+for(i in 1:nrow(all.values)){#
+	a <- all.values[i, 1]#
+	b <- all.values[i, 2]#
+	temp <- IMH(n = 1000, t1 = 1.5, t2 = 2, a = a, b = b)#
+	E.z <- mean(temp)#
+	target.E.z <- sqrt(2/1.5)#
+	E.inv.z <- mean(1/temp)#
+	target.E.inv.z <- sqrt(1.5/2) + 1/(2*2)#
+	abs.diff.E.z <- abs(E.z - target.E.z)#
+	abs.diff.E.inv.z <- abs(E.inv.z - target.E.inv.z)#
+	results[i, ] <- c(E.z, target.E.z, abs.diff.E.z, E.inv.z, target.E.inv.z, abs.diff.E.inv.z)#
+}#
+#
+colnames(results) <- c("E.z", "target.E.z", "abs.diff.E.z", "E.inv.z", "target.E.inv.z", "abs.diff.E.inv.z")#
+#
+results <- cbind(all.values, results)
+PROBLEM 6 #######
+#
+# STATUS: ALMOST FINISHED: Just test different thetas!#
+# *******************************************************#
+#
+# Given x(t):#
+# 1) Generate Y_t ~ g(y)#
+# 2) Take:#
+#
+# x(t+1) = Y_t with prob. min((f(Y_t)*g(x(t))) / (f(x(t))*g(Y_t)), 1)#
+#        = x(t) otherwise#
+#
+# Proposal density = Gamma(t1, t2)#
+#
+t1 = 1.5#
+t2 = 2#
+# Inverse Gaussian#
+f <- function(z, t1, t2)#
+{#
+    (z^-(3/2))*exp(-t1*z - (t2/z) + 2*sqrt(t1*t2) + log(sqrt(2*t2)))#
+}#
+#
+# Proposal density (Gamma)#
+g <- function(x, s1, s2)#
+{#
+    dgamma(x, s1, s2)#
+}#
+#
+# Independent Metropolis-Hastings Algorithm#
+# n = sample size#
+# t1, t2: The current theta values we're testing#
+# a = variable 1 proposal density#
+# b = variable 2 for proposal density#
+# theta1 and theta2 are fixed at 1.5 and 2 for all cases of f.x()#
+#
+IMH <- function(n = 1000, t1, t2, a, b)#
+{#
+    set.seed(0)#
+    samps <- numeric(n)             # Define vector to contain samples#
+    samps[1] <- rgamma(1, a, b)   # Define first value of sample from proposal density#
+    for(i in 2:n)#
+    {#
+        x = samps[i-1]              # This is x(t), the previous x value#
+        y = rgamma(1, a, b)         # This is Y_t, the potential NEW value#
+        # Now define cutoff and probability of acceptance#
+        # u must be less than p.accept to accept a new value#
+        u = runif(1, 0, 1)#
+        p.accept = min( (f(y,t1,t2)*g(x,a,b))/(f(x,t1,t2)*g(y,a,b)), 1) #
+        # p.accept = min( (f(y,t1,t2)*g(x,t1,t2))/(f(x,t1,t2)*g(y,t1,t2)), 1) #
+        if(u < p.accept)#
+        {#
+            samps[i] = y # Accept the new value#
+        }else{#
+            samps[i] = x # Keep the old value#
+        }#
+    }#
+    samps#
+}#
+---#
+#
+# test = IMH(n = 1e6, t1 = 1, t2 = 1)#
+test = IMH(n = 1e4, t1 = 1, t2 = 2, a = 1, b = 2)#
+mean(test)#
+mean(1/test)#
+#
+plot(density(test), main = "Independence - Metropolis-Hastings with Gamma Proposed Density")#
+#
+target.Ez = sqrt(2/1)#
+target.E1z = sqrt(1/2) + (1/(2*2))#
+# Try with MANY gamma combos: (1,1) and (1,0.5) work best#
+optMeans <- function(theta.1, theta.2){#
+	E.z <- sqrt(theta.2/theta.1)#
+	E.inv.z <- sqrt(theta.1/theta.2) + 1/(2*theta.2)#
+	cbind(E.z = E.z, E.inv.z = E.inv.z)#
+}#
+#
+# Test all possible combinations of theta.1 and theta.2 where each can equal 0.5, 1, 1.5, 2, 5, 7, 10#
+#
+values <- c(0.5, 1, 1.5, 2, 2.5, 3, 4, 5)#
+#
+a <- rep(values, rep(8, 8))#
+b <- rep(values, 8)#
+all.values <- cbind(a, b)#
+#
+results <- matrix(ncol = 6, nrow = nrow(all.values))#
+for(i in 1:nrow(all.values)){#
+	a <- all.values[i, 1]#
+	b <- all.values[i, 2]#
+	temp <- IMH(n = 1000, t1 = 1.5, t2 = 2, a = a, b = b)#
+	E.z <- mean(temp)#
+	target.E.z <- sqrt(2/1.5)#
+	E.inv.z <- mean(1/temp)#
+	target.E.inv.z <- sqrt(1.5/2) + 1/(2*2)#
+	abs.diff.E.z <- abs(E.z - target.E.z)#
+	abs.diff.E.inv.z <- abs(E.inv.z - target.E.inv.z)#
+	results[i, ] <- c(E.z, target.E.z, abs.diff.E.z, E.inv.z, target.E.inv.z, abs.diff.E.inv.z)#
+}#
+#
+colnames(results) <- c("E.z", "target.E.z", "abs.diff.E.z", "E.inv.z", "target.E.inv.z", "abs.diff.E.inv.z")#
+#
+results <- cbind(all.values, results)
+results
+head(results)
+which.min(results[, 5])
+which.min(results[, 8])
+results[27, ]
+results[46, ]
+results[results[1,]==1.5 & results[2,]==2,]
+results[results[1,]==1.5 & results[2,]==2,]
+results
+results[20, ]
+results[which.min(results[, 5])]
+results[which.min(results[, 8])]
+results[which.min(results[, 5]), ]
+results[which.min(results[, 8]), ]
+abs(mean(test) - target.Ez)
+test = IMH(n = 1e4, t1 = 1, t2 = 2, a = 1, b = 2)
+abs(mean(test) - target.Ez)
+abs(mean(1/test) - target.E1z)
+target.Ez = sqrt(2/1)
+target.E1z = sqrt(1/2) + (1/(2*2))
+abs(mean(test) - target.Ez)
+abs(mean(1/test) - target.E1z)
+library(xtable)
+print(xtable(results[c(20, 27, 46 ),]), type = "latex")
+print(xtable(results[c(20, 27, 46 ),], digits = c(0, 0, 5, 5, 5, 5, 5, 5)), type = "latex")
+print(xtable(results[c(20, 27, 46 ),], digits = c(0, 0, 5, 5, 5, 5, 5, 5, 5)), type = "latex")
+print(xtable(results[c(20, 27, 46 ),], digits = c(0, 0, 0, 5, 5, 5, 5, 5, 5)), type = "latex")
+print(xtable(results[c(20, 27, 46 ),], digits = c(0, 0, 0, rep(6, 6))), type = "latex")
+results
+results[c(20, 27, 46), ]
+print(xtable(results[c(20, 27, 46), ], digits = c(0,0,0, rep(6, 6)), type = "latex")
+)
+print(xtable(results[c(20, 27, 46), ], digits = c(0,1,1, rep(6, 6)), type = "latex")
+)
+results
+which.min(results[, c(5, 8)])
+results[27, ]
+print(xtable(results, digits = c(0, 2, 2, rep(6, 6))), type = "latex")
+print(xtable(results, digits = c(2, 2, rep(6, 6)), includerownames=FALSE), type = "latex")
+print(xtable(results, digits = c(2, 2, rep(6, 6))), includerownames=FALSE, type = "latex")
+print(xtable(results, digits = c(2, 2, rep(6, 6))), include.rownames=FALSE, type = "latex")
+print(xtable(results, digits = c(0, 2, 2, rep(6, 6))), include.rownames=FALSE, type = "latex")
+which.max(results[,5] & results[, 8])
+results[1,]
+which.max(results[, 5])
+results[57, ]
+which.max(results[, 8])
+results[1,]
+results[57, ]

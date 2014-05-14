@@ -76,7 +76,8 @@ plot(density(test), main = "Independence - Metropolis-Hastings with Gamma Propos
 target.Ez = sqrt(2/1)
 target.E1z = sqrt(1/2) + (1/(2*2))
 
-
+abs(mean(test) - target.Ez)
+abs(mean(1/test) - target.E1z)
 # Try with MANY gamma combos: (1,1) and (1,0.5) work best
 
 
@@ -88,10 +89,10 @@ optMeans <- function(theta.1, theta.2){
 
 # Test all possible combinations of theta.1 and theta.2 where each can equal 0.5, 1, 1.5, 2, 5, 7, 10
 
-values <- c(0.5, 1, 1.5, 2, 5, 7, 10)
+values <- c(0.5, 1, 1.5, 2, 2.5, 3, 4, 5)
 
-a <- rep(values, rep(7, 7))
-b <- rep(values, 7)
+a <- rep(values, rep(8, 8))
+b <- rep(values, 8)
 all.values <- cbind(a, b)
 
 results <- matrix(ncol = 6, nrow = nrow(all.values))
@@ -112,4 +113,5 @@ colnames(results) <- c("E.z", "target.E.z", "abs.diff.E.z", "E.inv.z", "target.E
 
 results <- cbind(all.values, results)
 
-
+results[which.min(results[, 5]), ]
+results[which.min(results[, 8]), ]
