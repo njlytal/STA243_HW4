@@ -36,7 +36,7 @@ g <- function(x, s1, s2)
 # b = variable 2 for proposal density
 # theta1 and theta2 are fixed at 1.5 and 2 for all cases of f.x()
 
-IMH <- function(n = 1000, t1, t2, a, b)
+IMH <- function(n = 1e4, t1, t2, a, b)
 {
     set.seed(0)
     samps <- numeric(n)             # Define vector to contain samples
@@ -59,13 +59,13 @@ IMH <- function(n = 1000, t1, t2, a, b)
             samps[i] = x # Keep the old value
         }
     }
-    samps
+    # Create a burn-in period by removing initial 10% of observations
+    samps = samps[(as.integer(n/10)+1):n] 
 }
 
 
 ---
 
-# test = IMH(n = 1e6, t1 = 1, t2 = 1)
 test = IMH(n = 1e4, t1 = 1, t2 = 2, a = 1, b = 2)
     
 mean(test)
@@ -78,7 +78,6 @@ target.E1z = sqrt(1/2) + (1/(2*2))
 
 abs(mean(test) - target.Ez)
 abs(mean(1/test) - target.E1z)
-# Try with MANY gamma combos: (1,1) and (1,0.5) work best
 
 
 optMeans <- function(theta.1, theta.2){
