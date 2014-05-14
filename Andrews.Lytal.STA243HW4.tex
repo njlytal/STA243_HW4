@@ -158,12 +158,15 @@ In order to carry out this estimation, we must first find the optimal value of b
 where $\hat{\theta}_{MC} = \frac{1}{n} \sum_{i = 1}^n c(U_i)$.\\
 
 Recall from part a that $h(x)  = \frac{1}{1 + x}$ and E[h(x)] = ln 2. What is left is to find E[c(U)] and cov(h(x), c(U)). Recall that $c(x) = 1 + x$ and since we are on the range of (0,1), we have that the expected value of c(x) is equal to 1.5. Thus, to find our optimal b, we first draw 1500 x's from $x \sim \mathrm{Unif}(0, 1)$, then plug these x's into $h(x) = \frac{1}{1 + x}$ and $c(x) = 1 + x$. We then estimate the covariance between these generated $h(x)$ and $c(x)$'s, and the variance of $c(x)$. In doing so, we obtain the following estimate of b: $b_{OPT} = -0.4747049$. 
+
 \item[c.] We estimate the variances of $\hat{I}_{MC}$ and $\hat{I}_{CV}$ by taking 1,000,000 samples from each in R and obtain:
 
  \[\mathrm{var}(\hat{I}_{MC}) = 1.274619e^{-05}\] 
 \[\mathrm{var}(\hat{I}_{CV}) = 4.002654e^{-07}\]
 
-Thus, we see that the variance of $\hat{I}_{CV}$ is much smaller than the variance of $\hat{I}_{MC}$, as we would have hoped.  
+Thus, we see that the variance of $\hat{I}_{CV}$ is much smaller than the variance of $\hat{I}_{MC}$, as we would have hoped.  We calculate the variance reduction factor derived in class by:
+\[ \text{variance reduction factor} = \frac{var(\hat{I}_{CV})}{var(\hat{I}_{MC})} \approx 0.03093002\]
+
 \item[d.] Although we have already designed an estimator, $\hat{I}_{CV}$, which is much more efficient than our original estimator, $\hat{I}_{MC}$, it is still possible to design a new estimator for $I$ that would have a smaller variance that $\hat{I}_{CV}$. To do so, we would simply add another control variate, so that instead of just one control variate ($c(x) = 1 + x)$, we would have two control variates and thus estimate two b's. Thus, our estimate would be obtained by finding $b_1^*$ and $b_2^*$ that minimize the variance of the following function:
 \[\hat{I}_{CV} = \hat{I}_{MC} - b_1(\hat{\theta}_{1MC} - \theta_1) - b_2(\hat{\theta}_{2MC} - \theta_2)\]
 
@@ -180,7 +183,12 @@ where $\rho$ is the correlation coefficient between $h(\tilde{x})$ and $c(\tilde
 \item[4.] We consider a common application in statistics: three different treatments are to be compared by applying them to a randomly selected experimental units. However; instead of the usualy assumption associated with $e_{ij}$ in the typical analysis of variance methods of comparison, we assume that the $e_{ij}$  have independent and identical double exponential distributions centered on zero.
 \begin{itemize}
 \item[a.]
-\item[b.]
+\item[b.] Another computer-intensive test that we could use even if we make not assumptions about the distribution of $e_{ij}$ is the permutation test, also known as the randomization test. The permutation test is a non-parametric test, and thus does not rely on any parameter assumptions to yield accurate results. The main application of the permutation test is to two-sample problems, but we can apply the approch to this three - treatment problem as well. We denote the variables as treatment one being denoted as $x_1, \dots, x_n  \ \ iid \ \ \sim G$, treatment two is $y_1, \dots, y_m, \ \ iid \ \ \sim F$, and treatment three as $z_1, \dots, z_k \ \ iid \ \ \sim H$. We would test the hypothesis:
+\[\text{H}_o: F = G = H \ \ \text{vs.} \ \ \text{H}_a: \text{not all distributions are equal}\]
+using the test statistic:
+\[\hat{\theta} = \bar{z} - \bar{y} - \bar{x}\]
+
+To carry out this test, we would merge $x_1, \dots x_n$, $y_1, \dots y_m$ and $z_1, \dots z_k$ into one large set, and then randomly sample without replacement n observations to serve as group 1, followed by a randomly sampling without replacement  m observations from the remaining to serve as group 2, and then the remaining k observations would serve as group 3. If the null hypothesis is correct - the three groups are equivalent - then we would expect the means from group 1, 2 and 3 all be similar to one another, and thus $\hat{\theta}$ should be zero. Thus, we calculate the value of $\hat{\theta}_1$ for this sample, and then repeat the procedure many, many times (join the treatments again, randomly sample without replacement to form three new groups, calculate $\hat{\theta}_i$ for i = some large number of repetitions). Thus, we will now have our original $\hat{\theta} = \bar{z} - \bar{y} - \bar{x}$ and a large number of $\hat{\theta}_i$'s. We look at the distribution of all of our $\hat{\theta}_i$'s and compare it to the $\hat{\theta}$ that we calculated form the data that was split into their original treatments. If this original $\hat{\theta}$ is outside of the middle 95\% of the mean differences, then we would reject the null hypothesis and have evidence to suggest that not all distributions are equal.
 \end{itemize}
 
 
@@ -317,7 +325,6 @@ a & b & lambda 2.5\% & lambda 97.5\% & p 2.5\% & p 97.5\% \\
 \end{tabular}\]
 \end{description}
 
-From the 
 
 %%%%%%%%
 % Problem 6  %
