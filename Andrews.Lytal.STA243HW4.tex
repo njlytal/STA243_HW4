@@ -238,8 +238,86 @@ The, the probability of success is the value when $r_i = 1$ over the values of $
 
 \[(r_i | \lambda, p, \textbf{x}) \sim \text{Bernoulli} \left(\frac{pe^{-\lambda}}{pe^{-\lambda} + (1 - p) I_{\{x_i = 0\}}} \right)\]
 \end{description}
-\item[c.] We implement the Gibbs sampler to generate a large (dependent) sample from the posterior distribution, and use this to construct 95\% Bayesian confidence intervals for $p$ and $\lambda$. 
+\item[c.] We implement the Gibbs sampler to generate a large (dependent) sample from the posterior distribution, and use this to construct 95\% Bayesian confidence intervals for $p$ and $\lambda$. We begin with a = b = 1 and n = 100,00. Plots of the dependent posterior sample can be seen below, the vertical line in each represents the respective true values ($\lambda = 2$ and $p = 0.30$).
+
+\[\includegraphics[scale = 0.50]{STA243HW4Q5Plot2.pdf}\]
+\[\includegraphics[scale = 0.50]{STA243HW4Q5Plot3.pdf}\]
+
+The 95\% Bayesian confidence intervals for $\lambda$ and $p$ are given by:
+\[\begin{tabular}{|c|c|c|}
+\multicolumn{3}{c}{95\% Bayesian Confidence Intervals}\\
+\hline
+paramater & 2.5\% & 97.5\% \\
+\hline
+$\lambda $ & 1.094145 & 2.486432 \\
+\hline
+p & 0.1318434 & 0.3300942\\
+\hline
+\end{tabular}\]
+Here, we see that both of the 95\% Bayesian confidence intervals contain the true values of their parameters. Thus, it appears that the Gibbs sampler method performed well here. We now run the algorithms trying different values of a and b. Here, we let a and b equal all possible pairs of the values 0.5, 1, 1.5, 2, 5, 10. The table on the following page shows thet 95\% Bayesian confidence intervals for $\lambda$ and p for each of these combinations. From these we see that the true $\lambda$, $\lambda = 2$, is contained in 80.56\% of the  intervals, and the true p $p = 0.30$ is contained in 94.44\% of the intervals. Below is a table that gives the values of a and b for which the true values of either $\lambda$ or $p$ were not in the 95\% Bayesian confidence interval. We note, however, that there was not a pairing of a and b for which both true parameter values were not in their respective confidence intervals. 
+
+\[\begin{tabular}{rrrr}
+  \hline
+a & b & true $\lambda$ in ci & true p 0.3 in ci \\ 
+  \hline
+0.50 & 0.50 & Yes & No \\ 
+  0.50 & 1.50 & Yes & No \\ 
+  0.50 & 5.00 & No & Yes \\ 
+  0.50 & 10.00 & No & Yes \\ 
+  1.00 & 10.00 & No & Yes \\ 
+  1.50 & 5.00 & No & Yes \\ 
+  1.50 & 10.00 & No & Yes \\ 
+  2.00 & 10.00 & No & Yes \\ 
+  10.00 & 10.00 & No & Yes \\ 
+   \hline
+\end{tabular}\]
+\vspace{-5mm}
+\[\begin{tabular}{rrrrrr}
+\multicolumn{6}{c}{95\% Bayesian Confidence Intervals}\\
+  \hline
+a & b & lambda 2.5\% & lambda 97.5\% & p 2.5\% & p 97.5\% \\ 
+  \hline
+0.50 & 0.50 & 1.18225 & 2.29708 & 0.23426 & 0.46619 \\ 
+  0.50 & 1.00 & 1.15448 & 2.44081 & 0.16008 & 0.36708 \\ 
+  0.50 & 1.50 & 1.36638 & 2.62522 & 0.17462 & 0.37379 \\ 
+  0.50 & 2.00 & 1.25703 & 2.31445 & 0.25211 & 0.48498 \\ 
+  0.50 & 5.00 & 1.21119 & 2.35611 & 0.16121 & 0.36494 \\ 
+  0.50 & 10.00 & 1.01142 & 1.84822 & 0.27445 & 0.53661 \\ 
+  1.00 & 0.50 & 1.10757 & 2.22492 & 0.22643 & 0.46454 \\ 
+  1.00 & 1.00 & 1.21069 & 2.17621 & 0.32107 & 0.57398 \\ 
+  1.00 & 1.50 & 1.38823 & 2.54760 & 0.21438 & 0.42483 \\ 
+  1.00 & 2.00 & 1.79457 & 3.06473 & 0.19352 & 0.38285 \\ 
+  1.00 & 5.00 & 1.07853 & 2.15017 & 0.18716 & 0.41221 \\ 
+  1.00 & 10.00 & 1.12645 & 1.96275 & 0.29917 & 0.55593 \\ 
+  1.50 & 0.50 & 1.30640 & 2.47520 & 0.21678 & 0.43497 \\ 
+  1.50 & 1.00 & 1.72349 & 2.97749 & 0.20466 & 0.39820 \\ 
+  1.50 & 1.50 & 1.55256 & 2.71074 & 0.22949 & 0.43750 \\ 
+  1.50 & 2.00 & 1.28477 & 2.48313 & 0.18763 & 0.39565 \\ 
+  1.50 & 5.00 & 1.75724 & 2.91669 & 0.20459 & 0.39817 \\ 
+  1.50 & 10.00 & 0.95236 & 1.84849 & 0.20993 & 0.45693 \\ 
+  2.00 & 0.50 & 1.61309 & 2.72191 & 0.26762 & 0.48107 \\ 
+  2.00 & 1.00 & 0.82764 & 1.88243 & 0.22352 & 0.49865 \\ 
+  2.00 & 1.50 & 1.51056 & 2.72678 & 0.20018 & 0.40144 \\ 
+  2.00 & 2.00 & 1.59258 & 2.81992 & 0.19808 & 0.39467 \\ 
+  2.00 & 5.00 & 0.93764 & 1.82662 & 0.28969 & 0.57103 \\ 
+  2.00 & 10.00 & 0.79592 & 1.67958 & 0.18733 & 0.44780 \\ 
+  5.00 & 0.50 & 1.67622 & 2.88744 & 0.22529 & 0.42702 \\ 
+  5.00 & 1.00 & 1.58953 & 2.83467 & 0.19800 & 0.39488 \\ 
+  5.00 & 1.50 & 1.67541 & 2.84001 & 0.23484 & 0.44006 \\ 
+  5.00 & 2.00 & 1.81842 & 2.96621 & 0.25133 & 0.45557 \\ 
+  5.00 & 5.00 & 1.36577 & 2.40414 & 0.22801 & 0.44344 \\ 
+  5.00 & 10.00 & 1.03043 & 1.95756 & 0.19377 & 0.42256 \\ 
+  10.00 & 0.50 & 1.36070 & 2.44332 & 0.26776 & 0.49683 \\ 
+  10.00 & 1.00 & 1.56820 & 2.73930 & 0.22811 & 0.43540 \\ 
+  10.00 & 1.50 & 1.38723 & 2.63277 & 0.18360 & 0.38616 \\ 
+  10.00 & 2.00 & 1.69544 & 2.88688 & 0.21513 & 0.41476 \\ 
+  10.00 & 5.00 & 1.19676 & 2.16314 & 0.26816 & 0.51072 \\ 
+  10.00 & 10.00 & 1.45066 & 2.43480 & 0.21618 & 0.42394 \\ 
+   \hline
+\end{tabular}\]
 \end{description}
+
+From the 
 
 %%%%%%%%
 % Problem 6  %

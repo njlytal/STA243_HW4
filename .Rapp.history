@@ -1,453 +1,3 @@
-func.b(1500, b)
-func.b <- function(n = 1500, b)#
-{#
-    x <- runif(n, 0, 1)#
-    h.x <- (1/(1+x))#
-    c.x <- (1+x)#
-    e.c.u <- 1.5 # (Ranges from 1+0 to 1+1 with even prob, so 1.5)#
-    out <- (1/n)*sum(h.x) - b*((1/n)*sum(c.x) - e.c.u)#
-    out#
-}
-func.b(1500, b)
-test.b = numeric(1e4)#
-for(i in 1:1e4)#
-{#
-    test.b[i] = func.b(b = b)#
-}#
-#
-var(test.b)
-PROBLEM 6 #######
-#
-# STATUS: ALMOST FINISHED: Just test different thetas!#
-# *******************************************************#
-#
-# Given x(t):#
-# 1) Generate Y_t ~ g(y)#
-# 2) Take:#
-#
-# x(t+1) = Y_t with prob. min((f(Y_t)*g(x(t))) / (f(x(t))*g(Y_t)), 1)#
-#        = x(t) otherwise#
-#
-# Proposal density = Gamma(t1, t2)#
-#
-t1 = 1.5#
-t2 = 2#
-#
-# In the terms given in Problem 6...#
-# g(x) = Gamma(t1, t2)#
-# f(x) = Inv. Gaussian given#
-#
-f <- function(z, t1, t2)#
-{#
-    (z^-(3/2))*exp(-t1*z - (t2/z) + 2*sqrt(t1*t2) + log(sqrt(2*t2)))#
-}#
-#
-g <- function(x, s1, s2)#
-{#
-    dgamma(x, s1, s2)#
-}
-Independent Metropolis-Hastings Algorithm#
-# n = sample size#
-# t1 = variable 1 proposal density#
-# t2 = variable 2 for proposal density#
-# theta1 and theta2 are fixed at 1.5 and 2 for all cases of f.x()#
-#
-IMH <- function(n = 1000, t1, t2)#
-{#
-    browser()#
-    set.seed(0)#
-    samps <- numeric(n)             # Define vector to contain samples#
-    samps[1] <- rgamma(1, t1, t2)   # Define first value of sample#
-    for(i in 2:n)#
-    {#
-        x = samps[i-1]              # This is x(t), the previous x value#
-        y = rgamma(1, t1, t2)   # This is Y_t, the potential NEW value#
-        # Now define cutoff and probability of acceptance#
-        # u must be less than p.accept to accept a new value#
-        u = runif(1, 0, 1)#
-        p.accept = min( (f(y,1.5,2)*g(x,t1,t2))/(f(x,1.5,2)*g(y,t1,t2)), 1) #
-        if(u < p.accept)#
-        {#
-            samps[i] = y # Accept the new value#
-        }else{#
-            samps[i] = x # Keep the old value#
-        }#
-    }#
-    samps#
-}#
-#
-test = numeric(100)#
-for(i in 1:100)#
-{#
-    test[i] = mean(IMH(t1 = 1.5, t2 = 2))#
-}#
-mean(test)#
----#
-#
-test = IMH(t1 = 1, t2 = 1)#
-#
-mean(test)#
-mean(1/test)#
-target.Ez = sqrt(2/1.5)#
-target.E1z = sqrt(1.5/2) + (1/(2*2))#
-# Try with MANY gamma combos: (1,1) and (1,0.5) work best
-IMH <- function(n = 1000, t1, t2)#
-{#
-    set.seed(0)#
-    samps <- numeric(n)             # Define vector to contain samples#
-    samps[1] <- rgamma(1, t1, t2)   # Define first value of sample#
-    for(i in 2:n)#
-    {#
-        x = samps[i-1]              # This is x(t), the previous x value#
-        y = rgamma(1, t1, t2)   # This is Y_t, the potential NEW value#
-        # Now define cutoff and probability of acceptance#
-        # u must be less than p.accept to accept a new value#
-        u = runif(1, 0, 1)#
-        p.accept = min( (f(y,1.5,2)*g(x,t1,t2))/(f(x,1.5,2)*g(y,t1,t2)), 1) #
-        if(u < p.accept)#
-        {#
-            samps[i] = y # Accept the new value#
-        }else{#
-            samps[i] = x # Keep the old value#
-        }#
-    }#
-    samps#
-}
-Q
-IMH <- function(n = 1000, t1, t2)#
-{#
-    set.seed(0)#
-    samps <- numeric(n)             # Define vector to contain samples#
-    samps[1] <- rgamma(1, t1, t2)   # Define first value of sample#
-    for(i in 2:n)#
-    {#
-        x = samps[i-1]              # This is x(t), the previous x value#
-        y = rgamma(1, t1, t2)   # This is Y_t, the potential NEW value#
-        # Now define cutoff and probability of acceptance#
-        # u must be less than p.accept to accept a new value#
-        u = runif(1, 0, 1)#
-        p.accept = min( (f(y,1.5,2)*g(x,t1,t2))/(f(x,1.5,2)*g(y,t1,t2)), 1) #
-        if(u < p.accept)#
-        {#
-            samps[i] = y # Accept the new value#
-        }else{#
-            samps[i] = x # Keep the old value#
-        }#
-    }#
-    samps#
-}
-test = numeric(100)
-for(i in 1:100)#
-{#
-    test[i] = mean(IMH(t1 = 1.5, t2 = 2))#
-}#
-mean(test)
-test = IMH(t1 = 1, t2 = 1)#
-#
-mean(test)#
-mean(1/test)#
-target.Ez = sqrt(2/1.5)#
-target.E1z = sqrt(1.5/2) + (1/(2*2))
-plot(density(test))
-plot(density(test), main = "")
-plot(density(test), main = "Independence - Metropolis-Hastings with Gamma Proposal Sample")
-target.Ez = sqrt(2/1.5)
-target.E1z = sqrt(1.5/2) + (1/(2*2))
-target.Ez
-target.E1z
-mean(test)
-mean(1/test)
-test = numeric(100)#
-for(i in 1:100)#
-{#
-    test[i] = mean(IMH(t1 = 1.5, t2 = 2))#
-}
-plot(density(test), main = "Independence - Metropolis-Hastings with Gamma Proposal Sample")
-PROBLEM 6 #######
-#
-# STATUS: ALMOST FINISHED: Just test different thetas!#
-# *******************************************************#
-#
-# Given x(t):#
-# 1) Generate Y_t ~ g(y)#
-# 2) Take:#
-#
-# x(t+1) = Y_t with prob. min((f(Y_t)*g(x(t))) / (f(x(t))*g(Y_t)), 1)#
-#        = x(t) otherwise#
-#
-# Proposal density = Gamma(t1, t2)#
-#
-t1 = 1.5#
-t2 = 2#
-#
-# In the terms given in Problem 6...#
-# g(x) = Gamma(t1, t2)#
-# f(x) = Inv. Gaussian given#
-#
-f <- function(z, t1, t2)#
-{#
-    (z^-(3/2))*exp(-t1*z - (t2/z) + 2*sqrt(t1*t2) + log(sqrt(2*t2)))#
-}#
-#
-g <- function(x, s1, s2)#
-{#
-    dgamma(x, s1, s2)#
-}#
-#
-# Independent Metropolis-Hastings Algorithm#
-# n = sample size#
-# t1 = variable 1 proposal density#
-# t2 = variable 2 for proposal density#
-# theta1 and theta2 are fixed at 1.5 and 2 for all cases of f.x()#
-#
-IMH <- function(n = 1000, t1, t2)#
-{#
-    set.seed(0)#
-    samps <- numeric(n)             # Define vector to contain samples#
-    samps[1] <- rgamma(1, t1, t2)   # Define first value of sample#
-    for(i in 2:n)#
-    {#
-        x = samps[i-1]              # This is x(t), the previous x value#
-        y = rgamma(1, t1, t2)   # This is Y_t, the potential NEW value#
-        # Now define cutoff and probability of acceptance#
-        # u must be less than p.accept to accept a new value#
-        u = runif(1, 0, 1)#
-        p.accept = min( (f(y,1.5,2)*g(x,t1,t2))/(f(x,1.5,2)*g(y,t1,t2)), 1) #
-        if(u < p.accept)#
-        {#
-            samps[i] = y # Accept the new value#
-        }else{#
-            samps[i] = x # Keep the old value#
-        }#
-    }#
-    samps#
-}#
-#
-test = numeric(100)#
-for(i in 1:100)#
-{#
-    test[i] = mean(IMH(t1 = 1.5, t2 = 2))#
-}
-plot(density(test), main = "Independence - Metropolis-Hastings with Gamma Proposal Sample")
-test = numeric(100)#
-for(i in 1:100)#
-{#
-    test[i] = mean(IMH(t1 = 1.5, t2 = 2))#
-}#
-#
-plot(density(test), main = "Independence - Metropolis-Hastings with Gamma Proposal Sample")
-mean(test)
-test = IMH(t1 = 1, t2 = 1)
-plot(density(test), main = "Independence - Metropolis-Hastings with Gamma Proposal Sample")
-test = IMH(t1 = 1, t2 = 1)
-mean(test)
-mean(1/test)
-plot(density(test), main = "Independence - Metropolis-Hastings with Gamma Proposed Density")
-test = numeric(100)#
-for(i in 1:100)#
-{#
-    test[i] = mean(IMH(t1 = 1.5, t2 = 2))#
-}#
-mean(test)
-test <- IMH(n = 10000, 1, 1)
-mean(test)
-mean(1/test)
-sqrt(1/1)
-sqrt(1/1) + 1/(2)
-test = IMH(n = 1000000, t1 = 1, t2 = 1)
-mean(test)
-mean(1/test)
-optMeans <- function(theta.1, theta.2){#
-	E.z <- sqrt(theta.2/theta.1)#
-	E.inv.z <- sqrt(theta.1/theta.2) + 1/(2*theta.2)#
-	cbind(E.z = E.z, E.inv.z = E.inv.z)#
-}
-values <- c(0.5, 1, 1.5, 2, 5, 7, 10)
-?rep
-rep(5, 1)
-rep(5, 5)
-rep(1, 5)
-theta.1 <- NULL
-for(i in 1:length(values)){#
-	rbind(theta.1, rep(values[i], 7 - i))#
-}
-theta.1
-i = 1
-rbind(theta.1, rep(values[i], 7 - i))
-theta.1 <- NULL
-c(theta.1, rep(values[i], 7 - i))
-values <- c(0.5, 1, 1.5, 2, 5, 7, 10)#
-theta.1 <- NULL#
-for(i in 1:length(values)){#
-	c(theta.1, rep(values[i], 7 - i))#
-}
-theta.1
-c(NULL, 1)
-i = 1
-c(theta.1, rep(values[i], 7 - i))
-i = 2
-c(theta.1, rep(values[i], 7 - i))
-cbind(theta.1, rep(values[i], 7 - i))
-i = 2
-cbind(theta.1, rep(values[i], 7 - i))
-values <- c(0.5, 1, 1.5, 2, 5, 7, 10)#
-theta.1 <- NULL#
-for(i in 1:length(values)){#
-	cbind(theta.1, rep(values[i], 8 - i))#
-}
-7!
-?factorial
-factorial(1)
-factorial(2)
-factorial(3)
-theta.1 <- vector(length = factorial(7))
-length(theta.1)
-for(i in 1:length(values)){#
-	cbind(theta.1, rep(values[i], 8 - i))#
-}
-theta.1
-for(i in 1:length(values)){#
-	temp <- rep(values[i], 8 - i)#
-	theta.1 <- c(theta.1, temp)#
-}
-theta.1
-theta.1 <- vector(length = factorial(7))
-i = 1
-theta.1 <- NULL
-for(i in 1:length(values)){#
-	temp <- rep(values[i], 8 - i)#
-	theta.1 <- c(theta.1, temp)#
-}
-length(theta.1)
-theta.1
-rep(c(1, 2, 3), 2)
-rep(1:4, 2)
-theta. 2 <- NULL#
-for(i in 1:length(values)){#
-	temp <- values[1:(8 - i)]#
-	theta.2 <- c(theta.2, temp)#
-}
-theta. 2 <- NULL
-theta.2 <- NULL
-for(i in 1:length(values)){#
-	temp <- values[1:(8 - i)]#
-	theta.2 <- c(theta.2, temp)#
-}
-theta.2
-cbind(theta.1, theta.2)
-theta.2 <- NULL#
-for(i in 1:length(values)){#
-	temp <- values[i:length(values)]#
-	theta.2 <- c(theta.2, temp)#
-}
-theta.2
-cbind(theta.1, theta.2)
-unique(cbind(theta.1, theta.2))
-length(unique(cbind(theta.1, theta.2)))
-factorial(7)
-7 + 6 + 5 + 4 + 3 + 2 + 1
-all.values <- cbind(rbind(theta.1, theta.2), rbind(theta.2, theta.1))
-all.values
-all.values <- cbind(c(theta.1, theta.2), c(theta.2, theta.1))
-all.values
-unique(all.values)
-theta.1 <- rep(values, 7)
-theta.1
-theta.2 <- rep(values, rep(7, 7))
-theta.2
-cbind(theta.1, theta.2)
-all.equal(cbind(theta.2, theta.1), all.values)
-theta.1 <- rep(values, rep(7, 7))
-theta.2 <- rep(values, 7)
-all.values <- cbind(theta.1, theta.2)
-all.values
-sapply(all.values, all.values[i, ])
-sapply(all.values, function(i) all.values[i, ])
-sapply(all.values, function(i) unlist(all.values[i, ]))
-unlist(sapply(all.values, function(i) unlist(all.values[i, ])))
-results <- matrix(ncol = 4, ncol = nrow(all.values))
-results <- matrix(ncol = 4, nrow = nrow(all.values))
-dim(results)
-all.values[1,]
-results[1, ] <- c(1, 1, 1, 1)
-results[1:5,]
-for(i in 1:5){
-t1 <- all.values[i, 1]#
-	t2 <- all.values[i, 2]#
-	temp <- IMH(n = 1000, t1 = t1, t2 = t2)#
-	E.z <- mean(temp)#
-	target.E.z <- sqrt(t2/t1)#
-	E.inv.z <- mean(1/temp)#
-	target.E.inv.z <- sqrt(t1/t2) + 1/(2*t2)#
-	results[i, ] <- c(E.z, target.E.z, E.inv.z, target.E.inv.z)#
-}
-results[1:5,]
-test <- IMH(1000, t1 = all.values[1, 1], t2 = all.values[ 1, 2])
-mean(test)
-mean(1/test)
-results <- matrix(ncol = 4, nrow = nrow(all.values))#
-for(i in 1:nrow(all.values)){#
-	t1 <- all.values[i, 1]#
-	t2 <- all.values[i, 2]#
-	temp <- IMH(n = 1000, t1 = t1, t2 = t2)#
-	E.z <- mean(temp)#
-	target.E.z <- sqrt(t2/t1)#
-	E.inv.z <- mean(1/temp)#
-	target.E.inv.z <- sqrt(t1/t2) + 1/(2*t2)#
-	results[i, ] <- c(E.z, target.E.z, E.inv.z, target.E.inv.z)#
-}
-results
-colnames(results) <- c("E.z", "target.E.z", "E.inv.z", "target.E.inv.z")
-head(results)
-results <- matrix(ncol = 4, nrow = nrow(all.values))#
-for(i in 1:nrow(all.values)){#
-	t1 <- all.values[i, 1]#
-	t2 <- all.values[i, 2]#
-	temp <- IMH(n = 1000, t1 = t1, t2 = t2)#
-	E.z <- mean(temp)#
-	target.E.z <- sqrt(t2/t1)#
-	E.inv.z <- mean(1/temp)#
-	target.E.inv.z <- sqrt(t1/t2) + 1/(2*t2)#
-	abs.diff.E.z <- abs(E.z - target.E.z)#
-	abs.diff.E.inv.z <- abs(E.inv.z - target.E.inv.z)#
-	results[i, ] <- c(E.z, target.E.z, abs.diff.E.z, E.inv.z, target.E.inv.z, abs.diff.E.inv.z)#
-}
-results <- matrix(ncol = 4, nrow = nrow(all.values))
-t1 <- all.values[i, 1]
-t2 <- all.values[i, 2]
-temp <- IMH(n = 1000, t1 = t1, t2 = t2)
-E.z <- mean(temp)
-target.E.z <- sqrt(t2/t1)
-E.inv.z <- mean(1/temp)
-target.E.inv.z <- sqrt(t1/t2) + 1/(2*t2)
-abs.diff.E.z <- abs(E.z - target.E.z)
-abs.diff.E.inv.z <- abs(E.inv.z - target.E.inv.z)
-c(E.z, target.E.z, abs.diff.E.z, E.inv.z, target.E.inv.z, abs.diff.E.inv.z)
-i
-results <- matrix(ncol = 6, nrow = nrow(all.values))
-for(i in 1:nrow(all.values)){#
-	t1 <- all.values[i, 1]#
-	t2 <- all.values[i, 2]#
-	temp <- IMH(n = 1000, t1 = t1, t2 = t2)#
-	E.z <- mean(temp)#
-	target.E.z <- sqrt(t2/t1)#
-	E.inv.z <- mean(1/temp)#
-	target.E.inv.z <- sqrt(t1/t2) + 1/(2*t2)#
-	abs.diff.E.z <- abs(E.z - target.E.z)#
-	abs.diff.E.inv.z <- abs(E.inv.z - target.E.inv.z)#
-	results[i, ] <- c(E.z, target.E.z, abs.diff.E.z, E.inv.z, target.E.inv.z, abs.diff.E.inv.z)#
-}
-results
-colnames(results) <- c("E.z", "target.E.z", "abs.diff.E.z", "E.inv.z", "target.E.inv.z", "abs.diff.E.inv.z")
-results
-sort(c(1,2,3))
-order(c(1,2,3))
-order(c(2,3,4))
-sort(c(2,3,4))
-which.min(results[ ,3])
-which.min(results[ ,6])
-results <- cbind(all.values, results)
-results
 results[18, ]
 min(results[, 5])
 min(results[ , 7])
@@ -961,7 +511,6 @@ which.min(results[, 8])
 results[27, ]
 results[46, ]
 results[results[1,]==1.5 & results[2,]==2,]
-results[results[1,]==1.5 & results[2,]==2,]
 results
 results[20, ]
 results[which.min(results[, 5])]
@@ -1003,3 +552,214 @@ results[57, ]
 which.max(results[, 8])
 results[1,]
 results[57, ]
+PROBLEM 5 #######
+#
+# STATUS: Need to find part B (simple)#
+# Can't proceed without knowing Gibbs Sampler#
+# *******************************************************#
+#
+# *** A ***#
+#
+# NOTE: This just generates x_i for the Joint Distribution#
+# We'll need a different function for part c.#
+#
+func.a <- function(n = 100, p = 0.3, lam = 2)#
+{#
+    r <- rbinom(n, 1, p)#
+    x <- rpois(n, lam*r)#
+    x#
+}#
+x = func.a()#
+#
+plot(density(func.a()), main = "Random Sample for ZIP Model, p = 0.3, lambda = 2")#
+# *** B ***#
+# This is strictly Calculus, so no need for programming.#
+#
+# *** C ***#
+# Need to calculate posterior before we can proceed#
+#
+func.c <- function(samps = 1e5, n = 100, a = 1, b = 1, p.start = 0.3, lam.start = 2)#
+{#
+    # browser()#
+    x <- func.a(n = n, p = p.start, lam = lam.start)#
+    lam <- numeric(samps) # Records values of lam estimated in all iterations#
+    p <- numeric(samps) # Records values of p estimated in all iterations#
+    r <- numeric(n) # Records the r used in the current iteration#
+    # Initialize values#
+    p[1] = p.start#
+    lam[1] = lam.start#
+    r <- rbinom(n, 1, p.start)#
+    for(i in 2:samps)#
+    {   #
+        lam[i] = rgamma(1, a + sum(x), b + sum(r)) # Conditional of lambda#
+        p[i] = rbeta(1, 1 + sum(r), n + 1 - sum(r)) # Conditional of p#
+        # Conditional of r given the above newly generated lambda and p#
+        r = rbinom(n, 1, (p[i]*exp(-lam[i])) / ((p[i])*exp(-lam[i]) + (1-p[i])*(x == 0)))#
+    }#
+    data.frame(lam, p)#
+}
+results = func.c(samps = 1e5)
+plot(density(results[,1]), main = "Lambda Density")
+plot(density(results[,1]), main = "Lambda Density")
+plot(density(results[,2]), main = "P Density")
+plot(density(results[,1]), main = "Lambda Density")#
+abline(v = 2, col = "red")
+plot(density(results[,2]), main = "P Density")#
+abline(v = 0.30, col = "red")
+quantile(results[,1], c(0.025,0.975)) # (1.44517, 2.529160)
+quantile(results[,2], c(0.025,0.975)) # (0.2650107, 0.4858813)
+values <- c(0.5, 1, 1.5, 2, 5, 10)
+a <- rep(values, rep(6, 6))
+b <- rep(values, 6)
+all.values <- cbind(a, b)
+all.values
+dim(results)
+func.c
+new.results <- sapply(1:nrow(all.values), function(i) func.c(samps = 1e5, n = 100, a = all.vales[i, 1], b = all.values[i, 2], p.start = 0.3, lam.start = 2))
+new.results <- sapply(1:nrow(all.values), function(i) func.c(samps = 1e5, n = 100, a = all.values[i, 1], b = all.values[i, 2], p.start = 0.3, lam.start = 2))
+class(new.results)
+dim(new.results)
+new.results
+par(mfrow = c(6, 6))
+test <- new.results[, 1]
+test
+class(test)
+length(test)
+quantile(test, c(0.25, 0.975))
+quantile(test[1], c(0.25, 0.975))
+results = func.c(samps = 1e5)
+class(results)
+dim(results)
+test <- unlist(test)
+class(test)
+lenght(test)
+length(test)
+test <- new.results[, 1]
+quantile(test[[1]], c(0.25, 0.975))
+confidence.intervals <- sapply(1:ncol(new.matrix), function(i) rbind(quantile(new.results[, i][[1]]),quantile(new.results[, i][[2]]))
+)
+confidence.intervals <- sapply(1:ncol(new.results), function(i) rbind(quantile(new.results[, i][[1]]),quantile(new.results[, i][[2]])))
+confidence.intervals
+confidence.intervals <- sapply(1:ncol(new.results), function(i) cbind(quantile(new.results[, i][[1]]),quantile(new.results[, i][[2]])))
+confidence.intervals
+class(new.results[, 1])
+class(new.results[, 1][[1]])
+length(new.results[, 1][[1]])
+confidence.intervals <- sapply(1:ncol(new.results), function(i) cbind(quantile(new.results[, i][[1]], c(0.025,0.975)),quantile(new.results[, i][[2]], c(0.025,0.975))))
+confidence.intervals
+confidence.intervals <- sapply(1:ncol(new.results), function(i) rbind(quantile(new.results[, i][[1]], c(0.025,0.975)),quantile(new.results[, i][[2]], c(0.025,0.975))))
+confidence.intervals
+i = 1
+rbind(quantile(new.results[, i][[1]], c(0.025,0.975)),quantile(new.results[, i][[2]], c(0.025,0.975)))
+confidence.intervals <- lapply(1:ncol(new.results), function(i) rbind(quantile(new.results[, i][[1]], c(0.025,0.975)),quantile(new.results[, i][[2]], c(0.025,0.975))))
+confidence.intervals
+confidence.intervals <- unlist(lapply(1:ncol(new.results), function(i) rbind(quantile(new.results[, i][[1]], c(0.025,0.975)),quantile(new.results[, i][[2]], c(0.025,0.975)))))
+confidence.intervals
+confidence.intervals <- apply(1:ncol(new.results), function(i) rbind(quantile(new.results[, i][[1]], c(0.025,0.975)),quantile(new.results[, i][[2]], c(0.025,0.975))))
+?apply
+confidence.intervals <- vapply(1:ncol(new.results), function(i) rbind(quantile(new.results[, i][[1]], c(0.025,0.975)),quantile(new.results[, i][[2]], c(0.025,0.975))))
+confidence.intervals <- sapply(1:ncol(new.results), function(i) rbind(quantile(new.results[, i][[1]], c(0.025,0.975)),quantile(new.results[, i][[2]], c(0.025,0.975))))
+confidence.intervals
+confidence.intervals <- sapply(1:ncol(new.results), function(i) rbind(quantile(new.results[, i][[1]], c(0.025,0.975)),quantile(new.results[, i][[2]], c(0.025,0.975))))
+confidence.intervals
+t(confidence.intervals)
+confidence.intervals <- lapply(1:ncol(new.results), function(i) rbind(quantile(new.results[, i][[1]], c(0.025,0.975)),quantile(new.results[, i][[2]], c(0.025,0.975))))
+?unlist
+test <- confidence.intervals
+unlist(test, recursive = FALSE)
+test
+unlist(test[[1]])
+test <- sapply(1:36, unlist(test[[i]]))
+test <- sapply(1:36,function(i) unlist(test[[i]]))
+test
+for(i in 1:36){#
+	unlist(test[[i]])#
+}
+test
+unlist(confidence.intervals[[i]])
+confidence.intervals <- lapply(1:ncol(new.results), function(i) rbind(quantile(new.results[, i][[1]], c(0.025,0.975)),quantile(new.results[, i][[2]], c(0.025,0.975))))
+for(i in 1:36){#
+	unlist(confidence.intervals[[i]])#
+}
+confidence.intervals
+?do.call
+do.call(unlist, confidence.intervals)
+do.call(data.frame, confidence.intervals)
+do.call(rbind, confidence.intervals)
+confidence.intervals
+do.call(cbind, confidence.intervals)
+t(do.call(cbind, confidence.intervals))
+confidence.intervals <- lapply(1:ncol(new.results), function(i) cbind(rep(all.values[i 1],2), rep(all.values[i, 2], 2), rbind(quantile(new.results[, i][[1]], c(0.025,0.975)),quantile(new.results[, i][[2]], c(0.025,0.975)))))
+confidence.intervals <- lapply(1:ncol(new.results), function(i) cbind(rep(all.values[i, 1],2), rep(all.values[i, 2], 2), rbind(quantile(new.results[, i][[1]], c(0.025,0.975)),quantile(new.results[, i][[2]], c(0.025,0.975)))))
+confidence.intervals
+confidence.intervals <- sapply(1:ncol(new.results), function(i) cbind(rep(all.values[i, 1],2), rep(all.values[i, 2], 2), rbind(quantile(new.results[, i][[1]], c(0.025,0.975)),quantile(new.results[, i][[2]], c(0.025,0.975)))))
+confidence.intervals
+confidence.intervals <- lapply(1:ncol(new.results), function(i) cbind(rep(all.values[i, 1],2), rep(all.values[i, 2], 2), rbind(quantile(new.results[, i][[1]], c(0.025,0.975)),quantile(new.results[, i][[2]], c(0.025,0.975)))))
+do.call(rbind, confidence.intervals)
+confidence.intervals <- do.call(rbind, confidence.intervals)
+confidence.intervals
+rownames(confidence.intervals) = ""
+rownames(confidence.intervals) = NULL
+confidence.intervals
+rownames(confidence.intervals) = rep(c("lambda", "p"), 18)
+length(rep(c("lambda", "p"), 18))
+confidence.intervals <- lapply(1:ncol(new.results), function(i) cbind(rep(all.values[i, 1],2), rep(all.values[i, 2], 2), rbind(quantile(new.results[, i][[1]], c(0.025,0.975)),quantile(new.results[, i][[2]], c(0.025,0.975)))))
+do.call(cbind, confidence.intervals)
+confidence.intervals <- lapply(1:ncol(new.results), function(i) cbind(rep(all.values[i, 1],2), rep(all.values[i, 2], 2), cbind(quantile(new.results[, i][[1]], c(0.025,0.975)),quantile(new.results[, i][[2]], c(0.025,0.975)))))
+do.call(rbind, confidence.intervals)
+confidence.intervals
+confidence.intervals <- lapply(1:ncol(new.results), function(i) cbind(rep(all.values[i, 1],1), rep(all.values[i, 2], 1), cbind(quantile(new.results[, i][[1]], c(0.025,0.975)),quantile(new.results[, i][[2]], c(0.025,0.975)))))
+confidence.intervals
+confidence.intervals <- lapply(1:ncol(new.results), function(i) cbind(rep(all.values[i, 1],1), rep(all.values[i, 2], 1), cbind(quantile(new.results[, i][[1]][1], c(0.025,0.975)),quantile(new.results[, i][[2]], c(0.025,0.975)))))
+confidence.intervals
+quantile(new.results[, i][[1]]
+)
+quantile(new.results[, i][[1]], c(0.025,0.975))
+quantile(new.results[, i][[1]], c(0.025,0.975))[1]
+confidence.intervals <- lapply(1:ncol(new.results), function(i) cbind(rep(all.values[i, 1],1), rep(all.values[i, 2], 1), cbind(quantile(new.results[, i][[1]], c(0.025,0.975))[1],quantile(new.results[, i][[1]], c(0.025,0.975))[2],quantile(new.results[, i][[2]], c(0.025,0.975))[1], quantile(new.results[, i][[2]], c(0.025,0.975))[2])))
+confidence.intervals
+unlist(confidence.intervals)
+confidence.intervals <- lapply(1:ncol(new.results), function(i) cbind(rep(all.values[i, 1],1), rep(all.values[i, 2], 1), cbind(quantile(new.results[, i][[1]], c(0.025,0.975))[1],quantile(new.results[, i][[1]], c(0.025,0.975))[2],quantile(new.results[, i][[2]], c(0.025,0.975))[1], quantile(new.results[, i][[2]], c(0.025,0.975))[2])))
+do.call(rbind, confidence.intervals)
+confidence.intervals <- do.call(rbind, confidence.intervals)
+confidence.intervals
+rownames(confidence.intervals) = NULL
+colnames(confidence.intervals) = c("a", "b", "lambda 2.5%", "lambda 97.5%", "p 2.5%", "p 97.5%")
+confidence.intervals
+confidence.intervals <- c(confidence.intervals, (confidence.intervals[, 3] < 2 & confidence.intervals[, 4] > 2)
+)
+confidence.intervals
+confidence.intervals <- lapply(1:ncol(new.results), function(i) cbind(rep(all.values[i, 1],1), rep(all.values[i, 2], 1), cbind(quantile(new.results[, i][[1]], c(0.025,0.975))[1],quantile(new.results[, i][[1]], c(0.025,0.975))[2],quantile(new.results[, i][[2]], c(0.025,0.975))[1], quantile(new.results[, i][[2]], c(0.025,0.975))[2])))
+confidence.intervals <- do.call(rbind, confidence.intervals)
+confidence.intervals <- c(confidence.intervals, (confidence.intervals[, 3] < 2 & confidence.intervals[, 4] > 2)
+)
+confidence.intervals
+confidence.intervals <- lapply(1:ncol(new.results), function(i) cbind(rep(all.values[i, 1],1), rep(all.values[i, 2], 1), cbind(quantile(new.results[, i][[1]], c(0.025,0.975))[1],quantile(new.results[, i][[1]], c(0.025,0.975))[2],quantile(new.results[, i][[2]], c(0.025,0.975))[1], quantile(new.results[, i][[2]], c(0.025,0.975))[2])))
+confidence.intervals <- do.call(rbind, confidence.intervals)
+confidence.intervals
+confidence.intervals <- cbind(confidence.intervals, (confidence.intervals[, 3] < 2 & confidence.intervals[, 4] > 2)
+)
+confidence.intervals
+confidence.intervals <- cbind(confidence.intervals, as.factor(confidence.intervals[, 3] < 2 & confidence.intervals[, 4] > 2)
+)
+confidence.intervals
+confidence.intervals <- lapply(1:ncol(new.results), function(i) cbind(rep(all.values[i, 1],1), rep(all.values[i, 2], 1), cbind(quantile(new.results[, i][[1]], c(0.025,0.975))[1],quantile(new.results[, i][[1]], c(0.025,0.975))[2],quantile(new.results[, i][[2]], c(0.025,0.975))[1], quantile(new.results[, i][[2]], c(0.025,0.975))[2])))
+confidence.intervals <- do.call(rbind, confidence.intervals)
+confidence.intervals <- cbind(confidence.intervals, (confidence.intervals[, 3] < 2 & confidence.intervals[, 4] > 2, (confidence.intervals[, 4] < 0.30 & confidence.intervals[, 5] > 0.30))
+confidence.intervals <- cbind(confidence.intervals, (confidence.intervals[, 3] < 2 & confidence.intervals[, 4] > 2), (confidence.intervals[, 4] < 0.30 & confidence.intervals[, 5] > 0.30))
+confidence.intervals
+confidence.intervals <- lapply(1:ncol(new.results), function(i) cbind(rep(all.values[i, 1],1), rep(all.values[i, 2], 1), cbind(quantile(new.results[, i][[1]], c(0.025,0.975))[1],quantile(new.results[, i][[1]], c(0.025,0.975))[2],quantile(new.results[, i][[2]], c(0.025,0.975))[1], quantile(new.results[, i][[2]], c(0.025,0.975))[2])))
+confidence.intervals <- do.call(rbind, confidence.intervals)
+confidence.intervals <- cbind(confidence.intervals, (confidence.intervals[, 3] < 2 & confidence.intervals[, 4] > 2), (confidence.intervals[, 5] < 0.30 & confidence.intervals[, 6] > 0.30))
+confidence.intervals
+colnames(confidence.intervals) = c("a", "b", "lambda 2.5%", "lambda 97.5%", "p 2.5%", "p 97.5%", "true lamda in ci", "true p in ci")
+confidence.intervals
+colnames(confidence.intervals) = c("a", "b", "lambda 2.5%", "lambda 97.5%", "p 2.5%", "p 97.5%", "2 in ci", "0.3 in ci")
+confidence.intervals
+rownames(confidence.intervals) = NULL
+print(xtable(confidence.intervals[, 2:6], digits = c(0, 2, 2, 5, 5, 5, 5)), include.rownames = FALSE)
+library(xtable)
+print(xtable(confidence.intervals[, 2:6], digits = c(0, 2, 2, 5, 5, 5, 5)), include.rownames = FALSE)
+print(xtable(confidence.intervals[, 1:6], digits = c(0, 2, 2, 5, 5, 5, 5)), include.rownames = FALSE)
+print(xtable(confidence.intervals, digits = c(0, 2, 2, 5, 5, 5, 5)), include.rownames = FALSE)
+print(xtable(confidence.intervals, digits = c(0, 2, 2, 5, 5, 5, 5, 0, 0)), include.rownames = FALSE)
