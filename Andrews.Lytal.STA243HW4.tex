@@ -180,7 +180,7 @@ where $\rho$ is the correlation coefficient between $h(\tilde{x})$ and $c(\tilde
 % Problem 4  %
 %%%%%%%%
 
-\item[4.] We consider a common application in statistics: three different treatments are to be compared by applying them to a randomly selected experimental units. However; instead of the usualy assumption associated with $e_{ij}$ in the typical analysis of variance methods of comparison, we assume that the $e_{ij}$  have independent and identical double exponential distributions centered on zero.
+\item[4.] We consider a common application in statistics: three different treatments are to be compared by applying them to a randomly selected experimental units. However; instead of the usual assumption associated with $e_{ij}$ in the typical analysis of variance methods of comparison, we assume that the $e_{ij}$  have independent and identical double exponential distributions centered on zero.
 \begin{itemize}
 \item[a.] Here we have the model:
 \[y_{ij} = \mu + \alpha_i + e_{ij} \ \ \ \ 1 \le i \le 3, \ \ \ \ 1 \leq j \leq n_i\]
@@ -204,12 +204,12 @@ We derived the likelihood-ratio test statistic for our case below. The numerator
 \[L(\mu_1, \mu_2, \mu_3, \sigma| y_{ij}) : \mu_1 = \mu_2 = \mu_3 = \mu = f(y_{ij} | \mu, \sigma)\]
 \[f(y_{ij} | \mu, \sigma)  = \frac{1}{2\sigma} \mathrm{exp} \left(-\frac{|y - \mu|}{\sigma} \right)\]
 
-The denominator of the liklihood-ratio test statistic becomes:
+The denominator of the likelihood-ratio test statistic becomes:
 \[L(\mu_1, \mu_2 \mu_3, \sigma| y_{ij}) : \alpha_i \neq 0 \text{ for some } i = f(y_{ij} | \mu_1, \mu_2, \mu_3, \sigma)\]
 
-\[f(y_{ij} | \mu_1, \mu_2, \mu_3, \sigma) = \frac{1}{2\sigma} \mathrm{exp} \left( - \frac{|y - \mu - \alpha_i|}{\sigma)}\right)\]
+\[f(y_{ij} | \mu_1, \mu_2, \mu_3, \sigma) = \frac{1}{2\sigma} \mathrm{exp} \left( - \frac{|y - \mu - \alpha_i|}{\sigma}\right)\]
 
-To find the supremum of the numerator and the denominator, we simply plug in the MLE for $\mu$. Here, since the Laplace distribution is symmetrical, the MLE for $\mu$ is the mean, which is simiply equal to the median of the $y_{ij}$'s. We shall denote the MLE of $\mu$ as $\hat{\mu}_{MLE}$. Since the null hypothesis does not depend on $\sigma$, we assume that $\sigma$ is fixed across the groups regardless if the groups differ. Thus, to estimate $\sigma$, we simply use the sample variance estimates defined as:
+To find the supremum of the numerator and the denominator, we simply plug in the MLE for $\mu$. Here, since the Laplace distribution is symmetrical, the MLE for $\mu$ is the mean, which is simply equal to the median of the $y_{ij}$'s. We shall denote the MLE of $\mu$ as $\hat{\mu}_{MLE}$. Since the null hypothesis does not depend on $\sigma$, we assume that $\sigma$ is fixed across the groups regardless if the groups differ. Thus, to estimate $\sigma$, we simply use the sample variance estimates defined as:
 
 \[\hat{\sigma} = \sqrt{\frac{1}{2(n-1)}\sum_j^{n_i}\sum_i^{I} |y_{ij} - \bar{y}|} \]
 
@@ -226,11 +226,12 @@ We carry out the Monte Carlo test as follows:
 \item[1.] Sample $  y_{ij} \sim \ \ iid \ \ \frac{1}{2\sigma} \mathrm{exp} \left( -\frac{|y_{ij} - \mu_i|}{\sigma}\right) \ \ \ \ (n_1 + n_2 + n_3) \text{ times}$
 \item[2.] Compute the likelihood ratio test statistic $\Lambda$ with the procedure mentioned above. 
 \item[3.] Repeat steps 1 and 2 a large number of times, say 1000 times.\\
+\end{description}
 
 Now we will have 1000 $\Lambda$'s, from which we can compare our $\Lambda$ that we got from our original observed sample of $y_{ij}$ to. If our $\Lambda$ is in the smallest 2.5\% of the simulated $\Lambda$'s, or in the largest  97.5\% of the simulated $\Lambda$'s, then we reject the null hypothesis and have evidence to suggest that not all of the $\alpha_i$'s  = 0. 
 
-\end{description}
-\item[b.] Another computer-intensive test that we could use even if we make not assumptions about the distribution of $e_{ij}$ is the permutation test, also known as the randomization test. The permutation test is a non-parametric test, and thus does not rely on any parameter assumptions to yield accurate results. The main application of the permutation test is to two-sample problems, but we can apply the approch to this three - treatment problem as well. We denote the variables as treatment one being denoted as $x_1, \dots, x_n  \ \ iid \ \ \sim G$, treatment two is $y_1, \dots, y_m, \ \ iid \ \ \sim F$, and treatment three as $z_1, \dots, z_k \ \ iid \ \ \sim H$. We would test the hypothesis:
+
+\item[b.] Another computer-intensive test that we could use even if we make not assumptions about the distribution of $e_{ij}$ is the permutation test, also known as the randomization test. The permutation test is a non-parametric test, and thus does not rely on any parameter assumptions to yield accurate results. The main application of the permutation test is to two-sample problems, but we can apply the approach to this three - treatment problem as well. We denote the variables as treatment one being denoted as $x_1, \dots, x_n  \ \ iid \ \ \sim G$, treatment two is $y_1, \dots, y_m, \ \ iid \ \ \sim F$, and treatment three as $z_1, \dots, z_k \ \ iid \ \ \sim H$. We would test the hypothesis:
 \[\text{H}_o: F = G = H \ \ \text{vs.} \ \ \text{H}_a: \text{not all distributions are equal}\]
 using the test statistic:
 \[\hat{\theta} = \bar{z} - \bar{y} - \bar{x}\]
